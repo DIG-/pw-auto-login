@@ -6,9 +6,14 @@
 namespace DIG {
 namespace Data {
 
+typedef struct KeyStore {
+  std::filesystem::path filename;
+  std::string key;
+};
+
 typedef struct Config {
   std::filesystem::path game;
-  std::vector<std::filesysten::path> stores;
+  std::vector<KeyStore> stores;
 } Config;
 
 }  // namespace Data
