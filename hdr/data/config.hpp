@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <vector>
+#include <string>
 
 namespace DIG {
 namespace Data {
