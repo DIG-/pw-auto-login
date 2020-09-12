@@ -9,7 +9,6 @@ namespace DIG {
 namespace Data {
 
 typedef struct Store {
-  std::string key;
   std::vector<Login> logins;
 };
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <filesystem>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace DIG {
 namespace Data {
@@ -10,7 +10,7 @@ namespace Data {
 typedef struct KeyStore {
   std::filesystem::path filename;
   std::string key;
-};
+} KeyStore;
 
 typedef struct Config {
   std::filesystem::path game;
