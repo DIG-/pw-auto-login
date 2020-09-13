@@ -3,14 +3,15 @@
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include "data/config.hpp"
+#include "is_type_in_namespace.hpp"
 
 namespace DIG {
 namespace Data {
 
-template <typename T>
+template <typename T, std::enable_if_t<helper::is_type_in_namespace<T>("DIG::Data::"), int> = 0>
 void to_json(nlohmann::json&, const T&);
 
-template <typename T>
+template <typename T, std::enable_if_t<helper::is_type_in_namespace<T>("DIG::Data::"), int> = 0>
 void from_json(const nlohmann::json&, T&);
 
 }  // namespace Data

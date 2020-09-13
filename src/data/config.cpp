@@ -7,12 +7,24 @@ namespace Data {
 
 template <>
 void to_json(nlohmann::json& json, const Config& config) {
-  json = nlohmann::json{{"game", config.game}};
+  json = nlohmann::json{{"game", config.game}, {"stores", config.stores}};
 }
 
 template <>
 void from_json(const nlohmann::json& json, Config& config) {
   json.at("game").get_to(config.game);
+  json.at("stores").get_to(config.stores);
+}
+
+template <>
+void to_json(nlohmann::json& json, const KeyStore& ks) {
+  json = nlohmann::json{{"file", ks.file}, {"key", ks.key}};
+}
+
+template <>
+void from_json(const nlohmann::json& json, KeyStore& ks) {
+  json.at("file").get_to(ks.file);
+  json.at("key").get_to(ks.key);
 }
 
 }  // namespace Data

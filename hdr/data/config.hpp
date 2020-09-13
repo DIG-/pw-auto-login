@@ -8,7 +8,7 @@ namespace DIG {
 namespace Data {
 
 typedef struct KeyStore {
-  std::filesystem::path filename;
+  std::filesystem::path file;
   std::string key;
 } KeyStore;
 
