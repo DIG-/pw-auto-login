@@ -13,6 +13,7 @@ typedef struct KeyStore {
 } KeyStore;
 
 typedef struct Config {
+  std::filesystem::path path;
   std::filesystem::path game;
   std::vector<KeyStore> stores;
 } Config;

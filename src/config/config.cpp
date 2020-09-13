@@ -18,11 +18,27 @@ Err init() {
 }
 
 Err init(const std::filesystem::path& path) {
-  return Err::NOT_IMPLEMENTED;
+  instance.path = path;
+  if (!std::filesystem::exists(path)) {
+    return Err::FILE_DOES_NOT_EXISTS;
+  }
+  std::ifstream file(path);
+  if (!file.is_open()) {
+    return Err::CAN_NOT_OPEN_FILE;
+  }
+
+  nlohmann::json json;
+  file >> json;
+  file.close();
+  json.get_to(instance);
+  instance.path = path;
+
+  return Err::OK;
 }
 
 Err save() {
-  return save(default_config());
+  auto path = instance.path.empty() ? default_config() : instance.path;
+  return save(path);
 }
 
 Err save(const std::filesystem::path& path) {
