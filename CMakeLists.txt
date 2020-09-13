@@ -22,6 +22,7 @@ target_include_directories(pw-auto-login PRIVATE ${MBEDTLS_INCLUDE_DIR})
 target_sources(pw-auto-login PRIVATE 
     src/main.cpp
     src/config/config.cpp
+    src/data/config.cpp
     src/os/windows.cpp
 )
 target_link_libraries(pw-auto-login ${LIBIUP_LIBRARIES})
