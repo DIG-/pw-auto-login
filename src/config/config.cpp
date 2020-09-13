@@ -26,7 +26,18 @@ Err save() {
 }
 
 Err save(const std::filesystem::path& path) {
+  auto parent = path.parent_path();
+  if (!std::filesystem::exists(parent)) {
+    if (!std::filesystem::create_directories(parent)) {
+      return Err::CAN_NOT_CREATE_FOLDER;
+    }
+  }
+
   std::ofstream file(path, std::fstream::trunc);
+  if (!file.is_open()) {
+    return Err::CAN_NOT_OPEN_FILE;
+  }
+
   nlohmann::json json = instance;
   file << json.dump();
   file.close();

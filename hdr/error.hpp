@@ -5,6 +5,8 @@ namespace DIG {
 typedef enum {
   OK = 0,
   NOT_IMPLEMENTED = 1,
+  CAN_NOT_CREATE_FOLDER = 2,
+  CAN_NOT_OPEN_FILE = 3,
 } Err;
 
 }
