@@ -15,7 +15,8 @@ std::filesystem::path data_dir() {
   if (path == nullptr || strlen(path) <= 0) {
     throw "Failed to get system path";
   }
-  return std::filesystem::path(path) / "PW-Auto-Login";
+  auto context = std::filesystem::path(path) / "DIG";
+  return context / "PW-Auto-Login";
 }
 
 }  // namespace OS
