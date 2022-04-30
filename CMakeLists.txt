@@ -25,6 +25,7 @@ target_sources(pw-auto-login PRIVATE
     src/crypto.cpp
     src/data/config.cpp
     src/os/windows.cpp
+    src/ui/ui.cpp
 )
 target_link_libraries(pw-auto-login ${LIBIUP_LIBRARIES})
 target_link_libraries(pw-auto-login ${MBEDTLS_LIBRARIES})
