@@ -18,12 +18,12 @@ void from_json(const nlohmann::json& json, Config& config) {
 }
 
 template <>
-void to_json(nlohmann::json& json, const KeyStore& ks) {
+void to_json(nlohmann::json& json, const AccountStoreInfo& ks) {
   json = nlohmann::json{{"file", ks.file}, {"key", ks.key}};
 }
 
 template <>
-void from_json(const nlohmann::json& json, KeyStore& ks) {
+void from_json(const nlohmann::json& json, AccountStoreInfo& ks) {
   json.at("file").get_to(ks.file);
   json.at("key").get_to(ks.key);
 }

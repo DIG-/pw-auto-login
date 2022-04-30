@@ -8,15 +8,15 @@
 namespace DIG {
 namespace Data {
 
-typedef struct KeyStore : Serializable {
+typedef struct AccountStoreInfo : Serializable {
   std::filesystem::path file;
   std::string key;
-} KeyStore;
+} AccountStoreInfo;
 
 typedef struct Config : Serializable {
   std::filesystem::path path;
   std::filesystem::path game;
-  std::vector<KeyStore> stores;
+  std::vector<AccountStoreInfo> stores;
 } Config;
 
 }  // namespace Data

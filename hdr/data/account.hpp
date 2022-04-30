@@ -7,12 +7,13 @@
 namespace DIG {
 namespace Data {
 
-typedef struct Login {
+typedef struct Account {
   std::string key;
   std::string username;
   std::string password;
+  std::string character;
   std::optional<Server> server;
-} Login;
+} Account;
 
 }  // namespace Data
 }  // namespace DIG
