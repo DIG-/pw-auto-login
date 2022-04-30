@@ -3,12 +3,10 @@
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include "data/config.hpp"
+#include "data/serializable.hpp"
 
 namespace DIG {
 namespace Data {
-
-typedef struct {
-} Serializable;
 
 template <typename T,
           std::enable_if_t<std::is_base_of_v<Serializable, T>, bool> = 0>

@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
-#include "data/serialize.hpp"
+#include "data/serializable.hpp"
 
 namespace DIG {
 namespace Data {

@@ -2,12 +2,13 @@
 
 #include <optional>
 
+#include "data/serializable.hpp"
 #include "data/server.hpp"
 
 namespace DIG {
 namespace Data {
 
-typedef struct Account {
+typedef struct Account : Serializable {
   std::string key;
   std::string username;
   std::string password;
