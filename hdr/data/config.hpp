@@ -16,7 +16,6 @@ typedef struct KeyStore : Serializable {
 typedef struct Config : Serializable {
   std::filesystem::path path;
   std::filesystem::path game;
-  std::string key;
   std::vector<KeyStore> stores;
 } Config;
 

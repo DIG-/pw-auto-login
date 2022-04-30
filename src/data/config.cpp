@@ -8,13 +8,12 @@ namespace Data {
 template <>
 void to_json(nlohmann::json& json, const Config& config) {
   json = nlohmann::json{
-      {"game", config.game}, {"stores", config.stores}, {"key", config.key}};
+      {"game", config.game}, {"stores", config.stores}};
 }
 
 template <>
 void from_json(const nlohmann::json& json, Config& config) {
   json.at("game").get_to(config.game);
-  json.at("key").get_to(config.key);
   json.at("stores").get_to(config.stores);
 }
 
