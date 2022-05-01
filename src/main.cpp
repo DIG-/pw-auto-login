@@ -30,9 +30,6 @@ int main(int argc, char** argv) {
     DIG::Data::AccountStoreInfo info;
     if (result.count("account-store-file")) {
       info.file = result["account-store-file"].as<std::string>();
-      if (result.count("account-store-password")) {
-        info.key = result["account-store-password"].as<std::string>();
-      }
     } else if (result.count("account-store")) {
       DIG::Config::init();
       auto index = result["account-store"].as<int>();
@@ -44,12 +41,18 @@ int main(int argc, char** argv) {
       }
       info = DIG::Config::instance.stores[index];
     }
+    if (result.count("account-store-password")) {
+      info.key = result["account-store-password"].as<std::string>();
+    }
 
     if (!std::filesystem::exists(info.file)) {
       DIG::UI::show_error_message(
           std::string("Can not found AccountStore file: ") +
           info.file.string());
       return 1;
+    }
+    if (info.key.empty()) {
+      DIG::UI::show_error_message("AccountStore requires password, use parameter --account-store-password");
     }
 
     return 0;
