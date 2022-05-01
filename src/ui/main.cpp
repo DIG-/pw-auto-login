@@ -2,6 +2,9 @@
 
 #include <iup.h>
 #include "config/config.hpp"
+#include "crypto.hpp"
+#include "os.hpp"
+#include "store.hpp"
 
 namespace DIG {
 namespace UI {
@@ -43,6 +46,13 @@ bool configure_game_executable() {
 }
 
 bool create_default_storage() {
+  Data::AccountStore store;
+  Data::AccountStoreInfo info;
+  info.file = OS::data_dir() / "default.dat";
+  info.key = Crypto::random(32);
+  AccountStore::save(store, info);
+  Config::instance.stores.push_back(info);
+  Config::save();
   return false;
 }
 
