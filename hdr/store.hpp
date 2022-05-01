@@ -8,8 +8,8 @@
 namespace DIG {
 namespace AccountStore {
 
-Data::AccountStore open(const std::filesystem::path&, const std::string&);
-Data::AccountStore open(const Data::AccountStoreInfo&);
+Data::AccountStore read(const std::filesystem::path&, const std::string&);
+Data::AccountStore read(const Data::AccountStoreInfo&);
 
 }  // namespace AccountStore
 }  // namespace DIG

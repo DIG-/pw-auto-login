@@ -9,11 +9,11 @@
 namespace DIG {
 namespace AccountStore {
 
-Data::AccountStore open(const Data::AccountStoreInfo& info) {
-  return open(info.file, info.key);
+Data::AccountStore read(const Data::AccountStoreInfo& info) {
+  return read(info.file, info.key);
 }
 
-Data::AccountStore open(const std::filesystem::path& filename,
+Data::AccountStore read(const std::filesystem::path& filename,
                         const std::string& key) {
   std::ifstream file(filename, std::ifstream::binary);
   std::stringstream buffer;
