@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cstring>
 #include <random>
+#include <sstream>
 
 namespace DIG {
 namespace Crypto {
@@ -99,6 +100,16 @@ Err decrypt(std::ostream& output,
     output.write((char*)output_v, BLOCK_SIZE);
   }
   return Err::OK;
+}
+
+std::string random(const uint_fast8_t& length) {
+  std::random_device rd;
+  std::uniform_int_distribution<uint8_t> dist(33, 125);
+  std::stringstream ss;
+  for (uint_fast16_t i = 0; i < length; i++) {
+    ss << (char)dist(rd);
+  }
+  return ss.str();
 }
 
 }  // namespace Crypto
