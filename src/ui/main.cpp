@@ -1,13 +1,26 @@
+#include "ui/main.hpp"
 #include "ui.hpp"
 
 #include <iup.h>
-#include "current/config.hpp"
 #include "crypto.hpp"
+#include "current/config.hpp"
 #include "os.hpp"
 #include "store.hpp"
 
 namespace DIG {
 namespace UI {
+namespace Main {
+
+Ihandle* account_list;
+Ihandle* account_list_add;
+Ihandle* account_list_del;
+Ihandle* account_username;
+Ihandle* account_password;
+Ihandle* account_password_toggle;
+Ihandle* account_character;
+Ihandle* account_server;
+Ihandle* account_save;
+Ihandle* account_launch;
 
 bool configure_game_executable() {
   show_error_message("Game executable not defined.");
@@ -56,34 +69,23 @@ bool create_default_storage() {
   return false;
 }
 
-void run_main() {
-  Config::init();
-  if (Config::instance.game.empty()) {
-    if (!configure_game_executable()) {
-      return;
-    }
-  }
-  if (Config::instance.stores.empty()) {
-    if (!create_default_storage()) {
-      return;
-    }
-  }
-  auto account_list = IupList(nullptr);
-  auto account_list_add = IupButton("Add", nullptr);
-  auto account_list_del = IupButton("Remove", nullptr);
+void create() {
+  account_list = IupList(nullptr);
+  account_list_add = IupButton("Add", nullptr);
+  account_list_del = IupButton("Remove", nullptr);
   auto account_username_lbl = IupLabel("Username:");
-  auto account_username = IupText(nullptr);
+  account_username = IupText(nullptr);
   auto account_password_lbl = IupLabel("Password:");
-  auto account_password = IupText(nullptr);
-  auto account_password_toggle = IupToggle("Edit", nullptr);
+  account_password = IupText(nullptr);
+  account_password_toggle = IupToggle("Edit", nullptr);
   auto account_character_lbl = IupLabel("Character:");
-  auto account_character = IupText(nullptr);
+  account_character = IupText(nullptr);
   auto account_server_lbl = IupLabel("Server:");
-  auto account_server = IupList(nullptr);
+  account_server = IupList(nullptr);
   auto account_save_lbl = IupLabel("");
-  auto account_save = IupButton("Save", nullptr);
+  account_save = IupButton("Save", nullptr);
   auto account_launch_lbl = IupLabel("");
-  auto account_launch = IupButton("Launch", nullptr);
+  account_launch = IupButton("Launch", nullptr);
 
   constexpr auto LABEL_SIZE = "60x0";
   constexpr auto FIELD_SIZE = "100x0";
@@ -136,6 +138,23 @@ void run_main() {
   IupSetAttribute(window, "TITLE", "PW Auto Login");
   IupSetAttribute(window, "RESIZE", "NO");
   IupShow(window);
+}
+
+}  // namespace Main
+
+void run_main() {
+  Config::init();
+  if (Config::instance.game.empty()) {
+    if (!Main::configure_game_executable()) {
+      return;
+    }
+  }
+  if (Config::instance.stores.empty()) {
+    if (!Main::create_default_storage()) {
+      return;
+    }
+  }
+  Main::create();
   IupMainLoop();
 }
 
