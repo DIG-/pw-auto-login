@@ -24,12 +24,33 @@ std::string prompt(const std::string& title,
   );
   // clang-format on
   std::string output;
+  constexpr auto dialog_name = "DIG::UI::Prompt";
+  constexpr auto dialog_field = "DIG::UI::Prompt::Field";
+  constexpr auto dialog_output = "DIG::UI::Prompt::Output";
+  IupSetHandle(dialog_name, dialog);
+  IupSetAttribute(dialog, dialog_field, (char*)field);
+  IupSetAttribute(dialog, dialog_output, (char*)&output);
+
+  IupSetCallback(cancel, "ACTION", [](Ihandle* ih) -> int {
+    IupDestroy(IupGetHandle(dialog_name));
+    return 0;
+  });
+  IupSetCallback(ok, "ACTION", [](Ihandle* ih) -> int {
+    auto dialog = IupGetHandle(dialog_name);
+    auto field = (Ihandle*)IupGetAttribute(dialog, dialog_field);
+    auto output = (std::string*)IupGetAttribute(dialog, dialog_output);
+    *output = IupGetAttribute(field, "VALUE");
+    IupDestroy(dialog);
+    return 0;
+  });
+
   IupSetAttribute(label, "EXPAND", "HORIZONTAL");
   IupSetAttribute(field, "EXPAND", "HORIZONTAL");
   IupSetAttribute(filler, "EXPAND", "HORIZONTAL");
   IupSetAttribute(dialog, "TITLE", title.c_str());
   IupSetAttribute(dialog, "RASTERSIZE", "120x0");
   IupSetAttribute(dialog, "RESIZE", "NO");
+  IupSetAttribute(dialog, "MINBOX", "NO");
   IupPopup(dialog, IUP_CENTER, IUP_CENTER);
   return output;
 }
