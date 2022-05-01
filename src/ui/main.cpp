@@ -242,6 +242,10 @@ void update_account() {
 
 }  // namespace Main
 
+namespace Main2 {
+  void create();
+}
+
 void run_main() {
   Config::init();
   if (Config::instance.game.empty()) {
@@ -254,7 +258,7 @@ void run_main() {
       return;
     }
   }
-  Main::create();
+  Main2::create();
   IupMainLoop();
 }
 

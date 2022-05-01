@@ -1,0 +1,16 @@
+<p:layout>
+    <IupFrame>
+        <IupVbox>
+            <IupList p:name="account_list" rastersize="200x150"/>
+            <IupHbox>
+                <IupButton p:name="account_add" rastersize="60x0" title="&Add"/>
+                <IupLabel expand="horizontal"/>
+                <IupButton p:name="account_edit" rastersize="60x0" title="&Edit"/>
+                <IupLabel expand="horizontal"/>
+                <IupButton p:name="account_rem" rastersize="60x0" title="&Remove"/>
+            </IupHbox>
+            <IupLabel rastersize="10x10"/>
+            <IupButton p:name="account_launch" expand="horizontal" title="&Launch"/>
+        </IupVbox>
+    </IupFrame>
+</p:layout>
