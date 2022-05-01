@@ -4,6 +4,7 @@
 #include <iup.h>
 #include "crypto.hpp"
 #include "current/config.hpp"
+#include "current/server.hpp"
 #include "current/store.hpp"
 #include "os.hpp"
 #include "store.hpp"
@@ -140,6 +141,17 @@ void create() {
   IupSetAttribute(window, "RESIZE", "NO");
   IupShow(window);
   AccountStore::open_first();
+  Server::read();
+  {
+    uint_fast16_t count = 0;
+    for (auto server : Server::list) {
+      count++;
+      IupSetStrAttribute(account_server, std::to_string(count).c_str(),
+                         server.name.c_str());
+    }
+    count++;
+    IupSetStrAttribute(account_server, std::to_string(count).c_str(), nullptr);
+  }
 }
 
 void disable_account_form() {
