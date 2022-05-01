@@ -1,6 +1,6 @@
 #include "game.hpp"
 
-#include "config/config.hpp"
+#include "current/config.hpp"
 
 namespace DIG {
 namespace Game {

@@ -1,4 +1,4 @@
-#include "config/config.hpp"
+#include "current/config.hpp"
 
 #include <fstream>
 #include "data/serialize.hpp"

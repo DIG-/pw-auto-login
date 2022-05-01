@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "config/config.hpp"
+#include "current/config.hpp"
 #include "crypto.hpp"
 #include "data/account.hpp"
 #include "data/store.hpp"

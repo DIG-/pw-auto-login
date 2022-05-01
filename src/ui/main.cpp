@@ -1,7 +1,7 @@
 #include "ui.hpp"
 
 #include <iup.h>
-#include "config/config.hpp"
+#include "current/config.hpp"
 #include "crypto.hpp"
 #include "os.hpp"
 #include "store.hpp"
