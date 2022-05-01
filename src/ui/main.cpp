@@ -68,6 +68,75 @@ void run_main() {
       return;
     }
   }
+  auto account_list = IupList(nullptr);
+  auto account_list_add = IupButton("Add", nullptr);
+  auto account_list_del = IupButton("Remove", nullptr);
+  auto account_username_lbl = IupLabel("Username:");
+  auto account_username = IupText(nullptr);
+  auto account_password_lbl = IupLabel("Password:");
+  auto account_password = IupText(nullptr);
+  auto account_password_toggle = IupToggle("Edit", nullptr);
+  auto account_character_lbl = IupLabel("Character:");
+  auto account_character = IupText(nullptr);
+  auto account_server_lbl = IupLabel("Server:");
+  auto account_server = IupList(nullptr);
+  auto account_save_lbl = IupLabel("");
+  auto account_save = IupButton("Save", nullptr);
+  auto account_launch_lbl = IupLabel("");
+  auto account_launch = IupButton("Launch", nullptr);
+
+  constexpr auto LABEL_SIZE = "60x0";
+  constexpr auto FIELD_SIZE = "100x0";
+  constexpr auto BUTTON_SIZE = "60x0";
+  IupSetAttribute(account_list, "RASTERSIZE", "120x0");
+  IupSetAttribute(account_list, "EXPAND", "VERTICAL");
+  IupSetAttribute(account_list_add, "RASTERSIZE", BUTTON_SIZE);
+  IupSetAttribute(account_list_del, "RASTERSIZE", BUTTON_SIZE);
+
+  IupSetAttribute(account_username_lbl, "RASTERSIZE", LABEL_SIZE);
+  IupSetAttribute(account_password_lbl, "RASTERSIZE", LABEL_SIZE);
+  IupSetAttribute(account_character_lbl, "RASTERSIZE", LABEL_SIZE);
+  IupSetAttribute(account_server_lbl, "RASTERSIZE", LABEL_SIZE);
+  IupSetAttribute(account_save_lbl, "RASTERSIZE", LABEL_SIZE);
+  IupSetAttribute(account_launch_lbl, "EXPAND", "HORIZONTAL");
+
+  IupSetAttribute(account_username, "RASTERSIZE", FIELD_SIZE);
+  IupSetAttribute(account_password, "RASTERSIZE", FIELD_SIZE);
+  IupSetAttribute(account_character, "RASTERSIZE", FIELD_SIZE);
+  IupSetAttribute(account_server, "RASTERSIZE", FIELD_SIZE);
+  IupSetAttribute(account_save, "RASTERSIZE", BUTTON_SIZE);
+  IupSetAttribute(account_launch, "RASTERSIZE", BUTTON_SIZE);
+
+  IupSetAttribute(account_server, "DROPDOWN", "YES");
+
+  // clang-format off
+  auto grid = IupVbox(
+    IupHbox(account_username_lbl, account_username, nullptr),
+    IupHbox(account_password_lbl, account_password, account_password_toggle, nullptr),
+    IupHbox(account_character_lbl, account_character, nullptr),
+    IupHbox(account_server_lbl, account_server, nullptr),
+    IupHbox(account_save_lbl, account_save, account_launch_lbl, account_launch, nullptr),
+    nullptr
+  );
+  // clang-format on
+  IupSetAttribute(grid, "NUMDIV", "2");
+  // clang-format off
+  auto layout = IupHbox(
+    IupVbox(
+      account_list,
+      IupHbox(account_list_add, account_list_del, nullptr),
+      nullptr
+    ),
+    IupFrame(grid),
+    nullptr
+  );
+  // clang-format on
+  auto window = IupDialog(layout);
+  // IupSetAttribute(window, "RASTERSIZE", "512x0");
+  IupSetAttribute(window, "TITLE", "PW Auto Login");
+  IupSetAttribute(window, "RESIZE", "NO");
+  IupShow(window);
+  IupMainLoop();
 }
 
 }  // namespace UI
