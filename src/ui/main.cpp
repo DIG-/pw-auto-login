@@ -72,6 +72,14 @@ bool create_default_storage() {
   return false;
 }
 
+int on_account_list_change(Ihandle* ih, char* text, int item, int state) {
+  if (state == 0)
+    return 0;
+  Account::current = AccountStore::instance.accounts[item - 1];
+  update_account();
+  return 0;
+}
+
 void create() {
   account_list = IupList(nullptr);
   account_list_add = IupButton("Add", nullptr);
@@ -113,6 +121,7 @@ void create() {
   IupSetAttribute(account_launch, "RASTERSIZE", BUTTON_SIZE);
 
   IupSetAttribute(account_server, "DROPDOWN", "YES");
+  IupSetCallback(account_list, "ACTION", (Icallback)on_account_list_change);
   IupSetCallback(account_list_add, "ACTION", [](Ihandle* ih) -> int {
     auto character = prompt_text("Add account", "Enter character name:");
     if (!character.empty()) {
@@ -185,20 +194,6 @@ void enable_account_form() {
   IupSetAttribute(account_launch, "ACTIVE", "YES");
 }
 
-void select_account(const uint_fast8_t index) {
-  enable_account_form();
-  auto& account = AccountStore::instance.accounts[index];
-  IupSetAttribute(account_username, "VALUE", account.username.c_str());
-  IupSetAttribute(account_password, "VALUE", account.password.c_str());
-  IupSetAttribute(account_character, "VALUE", account.character.c_str());
-  if (account.server.has_value()) {
-    IupSetAttribute(account_server, "VALUE",
-                    account.server.value().name.c_str());
-  } else {
-    IupSetAttribute(account_server, "VALUE", "");
-  }
-}
-
 void update_account_store() {
   uint_fast16_t count = 0;
   for (auto account : AccountStore::instance.accounts) {
@@ -210,13 +205,39 @@ void update_account_store() {
   IupSetAttribute(account_list, std::to_string(count).c_str(), nullptr);
   if (count > 1) {
     IupSetAttribute(account_list, "VALUE", "1");
+    on_account_list_change(account_list, nullptr, 1, 1);
   } else {
+    IupSetAttribute(account_list, "VALUE", "0");
     disable_account_form();
   }
 }
 
 void select_account(const uint_fast8_t& index) {
   IupSetAttribute(account_list, "VALUE", std::to_string(index + 1).c_str());
+  on_account_list_change(account_list, nullptr, index + 1, 1);
+}
+
+void update_account() {
+  enable_account_form();
+  auto& account = Account::current;
+  IupSetAttribute(account_username, "VALUE", account.username.c_str());
+  IupSetAttribute(account_password, "VALUE", account.password.c_str());
+  IupSetAttribute(account_character, "VALUE", account.character.c_str());
+  if (account.server.has_value()) {
+    IupSetAttribute(account_server, "VALUE",
+                    account.server.value().name.c_str());
+  } else {
+    IupSetAttribute(account_server, "VALUE", "");
+  }
+  if (account.password.empty()) {
+    IupSetAttribute(account_password, "ACTIVE", "YES");
+    IupSetAttribute(account_password_toggle, "VALUE", "ON");
+    IupSetAttribute(account_password_toggle, "ACTIVE", "NO");
+  } else {
+    IupSetAttribute(account_password, "ACTIVE", "NO");
+    IupSetAttribute(account_password_toggle, "VALUE", "OFF");
+    IupSetAttribute(account_password_toggle, "ACTIVE", "YES");
+  }
 }
 
 }  // namespace Main
