@@ -74,6 +74,8 @@ int main(int argc, char** argv) {
     return 0;
   }
 
-  std::cout << "Initialize UI" << std::endl;
+  DIG::UI::initialize();
+  DIG::UI::run_main();
+  DIG::UI::destroy();
   return 0;
 }
