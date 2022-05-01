@@ -4,6 +4,7 @@
 #include <iup.h>
 #include "crypto.hpp"
 #include "current/config.hpp"
+#include "current/store.hpp"
 #include "os.hpp"
 #include "store.hpp"
 
@@ -138,6 +139,46 @@ void create() {
   IupSetAttribute(window, "TITLE", "PW Auto Login");
   IupSetAttribute(window, "RESIZE", "NO");
   IupShow(window);
+  AccountStore::open_first();
+}
+
+void disable_account_form() {
+  IupSetAttribute(account_username, "ACTIVE", "NO");
+  IupSetAttribute(account_username, "VALUE", "");
+  IupSetAttribute(account_password, "ACTIVE", "NO");
+  IupSetAttribute(account_password, "VALUE", "");
+  IupSetAttribute(account_password_toggle, "ACTIVE", "NO");
+  IupSetAttribute(account_character, "ACTIVE", "NO");
+  IupSetAttribute(account_character, "VALUE", "");
+  IupSetAttribute(account_server, "ACTIVE", "NO");
+  IupSetAttribute(account_server, "VALUE", "");
+  IupSetAttribute(account_save, "ACTIVE", "NO");
+  IupSetAttribute(account_launch, "ACTIVE", "NO");
+}
+void enable_account_form() {
+  IupSetAttribute(account_username, "ACTIVE", "YES");
+  IupSetAttribute(account_password, "ACTIVE", "NO");
+  IupSetAttribute(account_password_toggle, "ACTIVE", "YES");
+  IupSetAttribute(account_character, "ACTIVE", "YES");
+  IupSetAttribute(account_server, "ACTIVE", "YES");
+  IupSetAttribute(account_save, "ACTIVE", "YES");
+  IupSetAttribute(account_launch, "ACTIVE", "YES");
+}
+
+void update_account_store() {
+  uint_fast16_t count = 0;
+  for (auto account : AccountStore::instance.accounts) {
+    count++;
+    IupSetAttribute(account_list, std::to_string(count).c_str(),
+                    account.character.c_str());
+  }
+  count++;
+  IupSetAttribute(account_list, std::to_string(count).c_str(), nullptr);
+  if (count > 1) {
+    IupSetAttribute(account_list, "VALUE", "1");
+  } else {
+    disable_account_form();
+  }
 }
 
 }  // namespace Main
