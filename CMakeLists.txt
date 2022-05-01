@@ -22,6 +22,7 @@ target_include_directories(pw-auto-login PRIVATE ${MBEDTLS_INCLUDE_DIR})
 target_sources(pw-auto-login PRIVATE 
     src/main.cpp
     src/current/config.cpp
+    src/current/store.cpp
     src/crypto.cpp
     src/data/account.cpp
     src/data/config.cpp
