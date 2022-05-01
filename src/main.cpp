@@ -3,8 +3,11 @@
 #include "config/config.hpp"
 #include "crypto.hpp"
 #include "data/account.hpp"
+#include "data/store.hpp"
 #include "error.hpp"
+#include "game.hpp"
 #include "os.hpp"
+#include "store.hpp"
 #include "ui.hpp"
 
 #include <cxxopts.hpp>
@@ -52,8 +55,21 @@ int main(int argc, char** argv) {
       return 1;
     }
     if (info.key.empty()) {
-      DIG::UI::show_error_message("AccountStore requires password, use parameter --account-store-password");
+      DIG::UI::show_error_message(
+          "AccountStore requires password, use parameter "
+          "--account-store-password");
     }
+
+    DIG::Data::AccountStore store = DIG::AccountStore::read(info);
+    auto index = result["account"].as<int>();
+    if (index < 0 || index >= store.accounts.size()) {
+      DIG::UI::show_error_message(
+          std::string("Can not found account #") + std::to_string(index) +
+          std::string(" in AccountStore: ") + info.file.string());
+      return 1;
+    }
+
+    DIG::Game::login(store.accounts[index]);
 
     return 0;
   }
