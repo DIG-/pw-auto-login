@@ -3,6 +3,7 @@
 
 #include <iup.h>
 #include "crypto.hpp"
+#include "current/account.hpp"
 #include "current/config.hpp"
 #include "current/server.hpp"
 #include "current/store.hpp"
@@ -112,6 +113,13 @@ void create() {
   IupSetAttribute(account_launch, "RASTERSIZE", BUTTON_SIZE);
 
   IupSetAttribute(account_server, "DROPDOWN", "YES");
+  IupSetCallback(account_list_add, "ACTION", [](Ihandle* ih) -> int {
+    auto character = prompt_text("Add account", "Enter character name:");
+    if (!character.empty()) {
+      Account::create(character);
+    }
+    return 0;
+  });
 
   // clang-format off
   auto grid = IupVbox(
