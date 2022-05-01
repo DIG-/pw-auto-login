@@ -30,6 +30,7 @@ target_sources(pw-auto-login PRIVATE
     src/game.cpp
     src/os/windows.cpp
     src/ui/ui.cpp
+    src/store.cpp
 )
 target_link_libraries(pw-auto-login ${LIBIUP_LIBRARIES})
 target_link_libraries(pw-auto-login ${MBEDTLS_LIBRARIES})
