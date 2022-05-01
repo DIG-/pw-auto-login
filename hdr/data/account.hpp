@@ -13,6 +13,8 @@ typedef struct Account : Serializable {
   std::string username;
   std::string password;
   std::string character;
+  std::string command_line;
+  std::optional<bool> use64;
   std::optional<Server> server;
 } Account;
 

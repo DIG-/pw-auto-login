@@ -16,6 +16,8 @@ typedef struct AccountStoreInfo : Serializable {
 typedef struct Config : Serializable {
   std::filesystem::path path;
   std::filesystem::path game;
+  bool use64;
+  std::string command_line;
   std::vector<AccountStoreInfo> stores;
 } Config;
 
