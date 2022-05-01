@@ -177,6 +177,20 @@ void enable_account_form() {
   IupSetAttribute(account_launch, "ACTIVE", "YES");
 }
 
+void select_account(const uint_fast8_t index) {
+  enable_account_form();
+  auto& account = AccountStore::instance.accounts[index];
+  IupSetAttribute(account_username, "VALUE", account.username.c_str());
+  IupSetAttribute(account_password, "VALUE", account.password.c_str());
+  IupSetAttribute(account_character, "VALUE", account.character.c_str());
+  if (account.server.has_value()) {
+    IupSetAttribute(account_server, "VALUE",
+                    account.server.value().name.c_str());
+  } else {
+    IupSetAttribute(account_server, "VALUE", "");
+  }
+}
+
 void update_account_store() {
   uint_fast16_t count = 0;
   for (auto account : AccountStore::instance.accounts) {
