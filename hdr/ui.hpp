@@ -11,6 +11,8 @@ void run_main();
 bool destroy();
 
 bool show_error_message(const std::string&, const bool = false);
+std::string prompt_text(const std::string&, const std::string&);
+std::string prompt_password(const std::string&, const std::string&);
 
 }  // namespace UI
 }  // namespace DIG
