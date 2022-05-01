@@ -215,6 +215,9 @@ void update_account_store() {
   }
 }
 
+void select_account(const uint_fast8_t& index){
+}
+
 }  // namespace Main
 
 void run_main() {

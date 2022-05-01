@@ -1,6 +1,7 @@
 #include "current/account.hpp"
 
 #include "current/store.hpp"
+#include "ui/main.hpp"
 
 namespace DIG {
 namespace Account {
@@ -8,7 +9,10 @@ namespace Account {
 Data::Account current;
 
 Err create(const std::string& character) {
-  return Err::NOT_IMPLEMENTED;
+  AccountStore::instance.accounts.push_back({character : character});
+  UI::Main::update_account_store();
+  UI::Main::select_account(AccountStore::instance.accounts.size() - 1);
+  return Err::OK;
 }
 
 }  // namespace Account
