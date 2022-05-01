@@ -25,5 +25,20 @@ Data::AccountStore read(const std::filesystem::path& filename,
   return store;
 }
 
+Err save(const Data::AccountStore& store, const Data::AccountStoreInfo& info) {
+  return save(store, info.file, info.key);
+}
+
+Err save(const Data::AccountStore& store,
+         const std::filesystem::path& filename,
+         const std::string& key) {
+  nlohmann::json json = store;
+  std::stringstream buffer;
+  buffer << json;
+  std::ofstream file(filename, std::ifstream::binary);
+  Crypto::encrypt(file, buffer, key);
+  return Err::OK;
+}
+
 }  // namespace AccountStore
 }  // namespace DIG
