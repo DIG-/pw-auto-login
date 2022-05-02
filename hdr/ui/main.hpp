@@ -7,8 +7,8 @@ namespace UI {
 namespace Main {
 
 void update_account_store();
-void select_account(const uint_fast8_t&);
-void update_account();
+void update_selection();
+void select_account(const uint_fast16_t&);
 
 }  // namespace Main
 }  // namespace UI

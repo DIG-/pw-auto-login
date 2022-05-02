@@ -14,15 +14,15 @@ namespace DIG {
 namespace UI {
 namespace Main {
 
+#include "main.c"
+
+constexpr auto MENU = "DIG::UI::Main::Menu";
+constexpr auto SETTINGS_ACTION = "DIG::UI::Main::Settings";
+
 Ihandle* account_list;
-Ihandle* account_list_add;
-Ihandle* account_list_del;
-Ihandle* account_username;
-Ihandle* account_password;
-Ihandle* account_password_toggle;
-Ihandle* account_character;
-Ihandle* account_server;
-Ihandle* account_save;
+Ihandle* account_add;
+Ihandle* account_edit;
+Ihandle* account_rem;
 Ihandle* account_launch;
 
 bool configure_game_executable() {
@@ -72,179 +72,84 @@ bool create_default_storage() {
   return false;
 }
 
-int on_account_list_change(Ihandle* ih, char* text, int item, int state) {
-  if (state == 0)
-    return 0;
-  Account::current = AccountStore::instance.accounts[item - 1];
-  update_account();
-  return 0;
+int_fast16_t get_selection() {
+  std::string value = IupGetAttribute(account_list, "VALUE");
+  int_fast16_t index = -1;
+  if (!value.empty()) {
+    index = std::stoi(value) - 1;
+  }
+  return index;
+}
+
+Data::Account& get_selected_account() {
+  return AccountStore::instance.accounts[get_selection()];
+}
+
+void create_menu() {
+  // clang-format off
+  auto menu = IupMenu(
+    IupItem("Settings", SETTINGS_ACTION),
+    nullptr
+  );
+  // clang-format on
+  IupSetHandle(MENU, menu);
 }
 
 void create() {
-  account_list = IupList(nullptr);
-  account_list_add = IupButton("Add", nullptr);
-  account_list_del = IupButton("Remove", nullptr);
-  auto account_username_lbl = IupLabel("Username:");
-  account_username = IupText(nullptr);
-  auto account_password_lbl = IupLabel("Password:");
-  account_password = IupText(nullptr);
-  account_password_toggle = IupToggle("Edit", nullptr);
-  auto account_character_lbl = IupLabel("Character:");
-  account_character = IupText(nullptr);
-  auto account_server_lbl = IupLabel("Server:");
-  account_server = IupList(nullptr);
-  auto account_save_lbl = IupLabel("");
-  account_save = IupButton("Save", nullptr);
-  auto account_launch_lbl = IupLabel("");
-  account_launch = IupButton("Launch", nullptr);
+  auto dialog = IupDialog(create_layout());
+  create_menu();
+  account_list = IupGetHandle("account_list");
+  account_add = IupGetHandle("account_add");
+  account_edit = IupGetHandle("account_edit");
+  account_rem = IupGetHandle("account_rem");
+  account_launch = IupGetHandle("account_launch");
 
-  constexpr auto LABEL_SIZE = "60x0";
-  constexpr auto FIELD_SIZE = "100x0";
-  constexpr auto BUTTON_SIZE = "60x0";
-  IupSetAttribute(account_list, "RASTERSIZE", "120x0");
-  IupSetAttribute(account_list, "EXPAND", "VERTICAL");
-  IupSetAttribute(account_list_add, "RASTERSIZE", BUTTON_SIZE);
-  IupSetAttribute(account_list_del, "RASTERSIZE", BUTTON_SIZE);
+  IupSetAttribute(dialog, "TITLE", "PW Auto Login");
+  IupSetAttribute(dialog, "RESIZE", "NO");
+  IupSetAttribute(dialog, "MENU", MENU);
 
-  IupSetAttribute(account_username_lbl, "RASTERSIZE", LABEL_SIZE);
-  IupSetAttribute(account_password_lbl, "RASTERSIZE", LABEL_SIZE);
-  IupSetAttribute(account_character_lbl, "RASTERSIZE", LABEL_SIZE);
-  IupSetAttribute(account_server_lbl, "RASTERSIZE", LABEL_SIZE);
-  IupSetAttribute(account_save_lbl, "RASTERSIZE", LABEL_SIZE);
-  IupSetAttribute(account_launch_lbl, "EXPAND", "HORIZONTAL");
+  IupSetAttribute(account_edit, "ACTIVE", "NO");
+  IupSetAttribute(account_rem, "ACTIVE", "NO");
+  IupSetAttribute(account_launch, "ACTIVE", "NO");
 
-  IupSetAttribute(account_username, "RASTERSIZE", FIELD_SIZE);
-  IupSetAttribute(account_password, "RASTERSIZE", FIELD_SIZE);
-  IupSetAttribute(account_character, "RASTERSIZE", FIELD_SIZE);
-  IupSetAttribute(account_server, "RASTERSIZE", FIELD_SIZE);
-  IupSetAttribute(account_save, "RASTERSIZE", BUTTON_SIZE);
-  IupSetAttribute(account_launch, "RASTERSIZE", BUTTON_SIZE);
-
-  IupSetAttribute(account_server, "DROPDOWN", "YES");
-  IupSetCallback(account_list, "ACTION", (Icallback)on_account_list_change);
-  IupSetCallback(account_list_add, "ACTION", [](Ihandle* ih) -> int {
-    auto character = prompt_text("Add account", "Enter character name:");
-    if (!character.empty()) {
-      Account::create(character);
-    }
+  IupSetCallback(account_list, "VALUECHANGED_CB", [](Ihandle* ih) -> int {
+    update_selection();
     return 0;
   });
 
-  // clang-format off
-  auto grid = IupVbox(
-    IupHbox(account_username_lbl, account_username, nullptr),
-    IupHbox(account_password_lbl, account_password, account_password_toggle, nullptr),
-    IupHbox(account_character_lbl, account_character, nullptr),
-    IupHbox(account_server_lbl, account_server, nullptr),
-    IupHbox(account_save_lbl, account_save, account_launch_lbl, account_launch, nullptr),
-    nullptr
-  );
-  // clang-format on
-  IupSetAttribute(grid, "NUMDIV", "2");
-  // clang-format off
-  auto layout = IupHbox(
-    IupVbox(
-      account_list,
-      IupHbox(account_list_add, account_list_del, nullptr),
-      nullptr
-    ),
-    IupFrame(grid),
-    nullptr
-  );
-  // clang-format on
-  auto window = IupDialog(layout);
-  // IupSetAttribute(window, "RASTERSIZE", "512x0");
-  IupSetAttribute(window, "TITLE", "PW Auto Login");
-  IupSetAttribute(window, "RESIZE", "NO");
-  IupShow(window);
-  AccountStore::open_first();
-  Server::read();
-  {
-    uint_fast16_t count = 0;
-    for (auto server : Server::list) {
-      count++;
-      IupSetStrAttribute(account_server, std::to_string(count).c_str(),
-                         server.name.c_str());
-    }
-    count++;
-    IupSetStrAttribute(account_server, std::to_string(count).c_str(), nullptr);
-  }
+  IupShow(dialog);
 }
 
-void disable_account_form() {
-  IupSetAttribute(account_username, "ACTIVE", "NO");
-  IupSetAttribute(account_username, "VALUE", "");
-  IupSetAttribute(account_password, "ACTIVE", "NO");
-  IupSetAttribute(account_password, "VALUE", "");
-  IupSetAttribute(account_password_toggle, "ACTIVE", "NO");
-  IupSetAttribute(account_character, "ACTIVE", "NO");
-  IupSetAttribute(account_character, "VALUE", "");
-  IupSetAttribute(account_server, "ACTIVE", "NO");
-  IupSetAttribute(account_server, "VALUE", "");
-  IupSetAttribute(account_save, "ACTIVE", "NO");
-  IupSetAttribute(account_launch, "ACTIVE", "NO");
-}
-void enable_account_form() {
-  IupSetAttribute(account_username, "ACTIVE", "YES");
-  IupSetAttribute(account_password, "ACTIVE", "NO");
-  IupSetAttribute(account_password_toggle, "ACTIVE", "YES");
-  IupSetAttribute(account_character, "ACTIVE", "YES");
-  IupSetAttribute(account_server, "ACTIVE", "YES");
-  IupSetAttribute(account_save, "ACTIVE", "YES");
+void update_selection() {
+  auto index = get_selection();
+  if (index < 0) {
+    IupSetAttribute(account_edit, "ACTIVE", "NO");
+    IupSetAttribute(account_rem, "ACTIVE", "NO");
+    IupSetAttribute(account_launch, "ACTIVE", "NO");
+    return;
+  }
+  IupSetAttribute(account_edit, "ACTIVE", "YES");
+  IupSetAttribute(account_rem, "ACTIVE", "YES");
   IupSetAttribute(account_launch, "ACTIVE", "YES");
 }
 
 void update_account_store() {
+  auto& store = AccountStore::instance;
   uint_fast16_t count = 0;
-  for (auto account : AccountStore::instance.accounts) {
-    count++;
-    IupSetAttribute(account_list, std::to_string(count).c_str(),
+  for (auto& account : store.accounts) {
+    IupSetAttribute(account_list, std::to_string(++count).c_str(),
                     account.character.c_str());
   }
-  count++;
-  IupSetAttribute(account_list, std::to_string(count).c_str(), nullptr);
-  if (count > 1) {
-    IupSetAttribute(account_list, "VALUE", "1");
-    on_account_list_change(account_list, nullptr, 1, 1);
-  } else {
-    IupSetAttribute(account_list, "VALUE", "0");
-    disable_account_form();
-  }
+  IupSetAttribute(account_list, std::to_string(++count).c_str(), nullptr);
+  update_selection();
 }
 
-void select_account(const uint_fast8_t& index) {
+void select_account(const uint_fast16_t& index) {
   IupSetAttribute(account_list, "VALUE", std::to_string(index + 1).c_str());
-  on_account_list_change(account_list, nullptr, index + 1, 1);
-}
-
-void update_account() {
-  enable_account_form();
-  auto& account = Account::current;
-  IupSetAttribute(account_username, "VALUE", account.username.c_str());
-  IupSetAttribute(account_password, "VALUE", account.password.c_str());
-  IupSetAttribute(account_character, "VALUE", account.character.c_str());
-  if (account.server.has_value()) {
-    IupSetAttribute(account_server, "VALUE",
-                    account.server.value().name.c_str());
-  } else {
-    IupSetAttribute(account_server, "VALUE", "");
-  }
-  if (account.password.empty()) {
-    IupSetAttribute(account_password, "ACTIVE", "YES");
-    IupSetAttribute(account_password_toggle, "VALUE", "ON");
-    IupSetAttribute(account_password_toggle, "ACTIVE", "NO");
-  } else {
-    IupSetAttribute(account_password, "ACTIVE", "NO");
-    IupSetAttribute(account_password_toggle, "VALUE", "OFF");
-    IupSetAttribute(account_password_toggle, "ACTIVE", "YES");
-  }
+  update_selection();
 }
 
 }  // namespace Main
-
-namespace Main2 {
-  void create();
-}
 
 void run_main() {
   Config::init();
@@ -258,7 +163,7 @@ void run_main() {
       return;
     }
   }
-  Main2::create();
+  Main::create();
   IupMainLoop();
 }
 
