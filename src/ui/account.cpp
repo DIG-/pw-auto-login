@@ -5,6 +5,8 @@ namespace DIG {
 namespace UI {
 namespace Account {
 
+#include "account.layout.c"
+
 bool add_account() {
   return false;
 }

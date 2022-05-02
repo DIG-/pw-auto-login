@@ -1,0 +1,36 @@
+<p:layout>
+    <p:define p:name="C1" p:value="100x0"/>
+    <IupFrame>
+        <IupVbox>
+            <IupHbox>
+                <IupLabel title="Username:" rastersize="[C1]"/>
+                <IupText p:name="account_username"/>
+            </IupHbox>
+            <IupHbox>
+                <IupLabel title="Password:" rastersize="[C1]"/>
+                <IupText p:name="account_password" password="yes"/>
+            </IupHbox>
+            <IupHbox>
+                <IupLabel title="Character:" rastersize="[C1]"/>
+                <IupText p:name="account_character"/>
+            </IupHbox>
+            <IupHbox>
+                <IupLabel title="Server:" rastersize="[C1]"/>
+                <IupList p:name="account_server" dropdown="yes"/>
+            </IupHbox>
+            <IupHbox>
+                <IupLabel title="64 bits:" rastersize="[C1]"/>
+                <IupToggle p:name="account_64" i:3state="yes" value="NOTDEF"/>
+            </IupHbox>
+            <IupLabel title="Extra command line:"/>
+            <IupText p:name="account_cmd" expand="horizontal"/>
+            <IupLabel separator="horizontal" rastersize="0x10"/>
+            <IupHbox>
+                <IupLabel expand="horizontal"/>
+                <IupButton title="&Save"/>
+                <IupLabel rastersize="10x0"/>
+                <IupButton title="&Cancel"/>
+            </IupHbox>
+        </IupVbox>
+    </IupFrame>
+</p:layout>
