@@ -14,7 +14,7 @@ namespace DIG {
 namespace UI {
 namespace Main {
 
-#include "main.c"
+#include "main.layout.c"
 
 constexpr auto MENU = "DIG::UI::Main::Menu";
 constexpr auto SETTINGS_ACTION = "DIG::UI::Main::Settings";
