@@ -141,13 +141,17 @@ bool show_dialog(Data::Account& account, bool edit) {
 bool add_account() {
   Data::Account account;
   auto edited = show_dialog(account, false);
-  AccountStore::instance.accounts.push_back(account);
-  // TODO: Save current AccountStore
+  if (edited) {
+    AccountStore::instance.accounts.push_back(account);
+    AccountStore::save();
+  }
   return edited;
 }
 bool edit_account(const uint_fast16_t& index) {
   auto edited = show_dialog(AccountStore::instance.accounts[index], true);
-  // TODO: Save current AccountStore
+  if (edited) {
+    AccountStore::save();
+  }
   return edited;
 }
 
