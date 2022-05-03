@@ -1,6 +1,10 @@
 #include "ui/account.hpp"
 
 #include <iup.h>
+#include <algorithm>
+#include <sstream>
+#include "crypto.hpp"
+#include "current/server.hpp"
 #include "current/store.hpp"
 #include "data/account.hpp"
 
@@ -22,6 +26,52 @@ Ihandle* account_cmd = nullptr;
 
 constexpr auto ACCOUNT_POINTER = "DIG::UI::Account::Dialog::Pointer";
 constexpr auto SAVE_BOOLEAN = "DIG::UI::Account::Dialog::Save";
+
+void apply(Data::Account& account) {
+  account.username = IupGetAttribute(account_username, "VALUE");
+  account.character = IupGetAttribute(account_character, "VALUE");
+  account.command_line = IupGetAttribute(account_cmd, "VALUE");
+
+  // Update password
+  bool encrypt =
+      account.password.compare(IupGetAttribute(account_password, "VALUE")) != 0;
+  if (account.key.empty()) {
+    encrypt = true;
+    account.key = Crypto::random(32);
+  }
+  if (encrypt) {
+    std::stringstream input(IupGetAttribute(account_password, "VALUE"));
+    std::stringstream output;
+    Crypto::encrypt(output, input, account.key);
+    output.str(account.password);
+  }
+
+  // Update 64 bits
+  std::string OPT_ON = "ON";
+  if (OPT_ON.compare(IupGetAttribute(account_64_default, "VALUE")) == 0) {
+    account.use64.reset();
+  } else if (OPT_ON.compare(IupGetAttribute(account_64_yes, "VALUE")) == 0) {
+    account.use64.emplace(true);
+  } else {
+    account.use64.emplace(false);
+  }
+
+  // Update Server
+  std::string server = IupGetAttribute(account_server, "VALUE");
+  if (server.empty()) {
+    account.server.reset();
+  } else if (!account.server.has_value() ||
+             server.compare(account.server.value().name) != 0) {
+    auto found = std::find_if(
+        Server::list.begin(), Server::list.end(),
+        [&server](auto& it) -> bool { return server.compare(it.name) == 0; });
+    if (found != Server::list.end()) {
+      account.server.emplace(*found);
+    } else {
+      account.server.reset();
+    }
+  }
+}
 
 bool show_dialog(Data::Account& account, bool edit) {
   dialog = IupDialog(create_layout());
@@ -45,9 +95,24 @@ bool show_dialog(Data::Account& account, bool edit) {
     return 0;
   });
   IupSetCallback(account_save, "ACTION", [](Ihandle* ih) -> int {
+    apply(*((Data::Account*)IupGetAttribute(dialog, ACCOUNT_POINTER)));
+    *((bool*)IupGetAttribute(dialog, SAVE_BOOLEAN)) = true;
     IupDestroy(dialog);
     return 0;
   });
+
+  {
+    // TODO: Check if server selection is enabled
+    if (Server::list.empty()) {
+      Server::read();
+    }
+    uint_fast16_t count = 0;
+    for (auto& server : Server::list) {
+      IupSetAttribute(account_server, std::to_string(++count).c_str(),
+                      server.name.c_str());
+    }
+    IupSetAttribute(account_server, std::to_string(++count).c_str(), nullptr);
+  }
 
   IupPopup(dialog, IUP_CENTER, IUP_CENTER);
   return save;
