@@ -1,35 +1,41 @@
 <p:layout>
-    <p:define p:name="C1" p:value="100x0"/>
+    <p:define p:name="C1" p:value="80x0"/>
     <IupFrame>
         <IupVbox>
             <IupHbox>
                 <IupLabel title="Username:" rastersize="[C1]"/>
-                <IupText p:name="account_username"/>
+                <IupText p:name="account_username" expand="horizontal"/>
             </IupHbox>
             <IupHbox>
                 <IupLabel title="Password:" rastersize="[C1]"/>
-                <IupText p:name="account_password" password="yes"/>
+                <IupText p:name="account_password" password="yes" expand="horizontal"/>
             </IupHbox>
             <IupHbox>
                 <IupLabel title="Character:" rastersize="[C1]"/>
-                <IupText p:name="account_character"/>
+                <IupText p:name="account_character" expand="horizontal"/>
             </IupHbox>
             <IupHbox>
                 <IupLabel title="Server:" rastersize="[C1]"/>
-                <IupList p:name="account_server" dropdown="yes"/>
+                <IupList p:name="account_server" dropdown="yes" expand="horizontal"/>
             </IupHbox>
             <IupHbox>
                 <IupLabel title="64 bits:" rastersize="[C1]"/>
-                <IupToggle p:name="account_64" i:3state="yes" value="NOTDEF"/>
+                <IupRadio>
+                    <IupHbox>
+                        <IupToggle p:name="account_64_default" title="Default"/>
+                        <IupToggle p:name="account_64_yes" title="Yes"/>
+                        <IupToggle p:name="account_64_no" title="No"/>
+                    </IupHbox>
+                </IupRadio>
             </IupHbox>
             <IupLabel title="Extra command line:"/>
             <IupText p:name="account_cmd" expand="horizontal"/>
-            <IupLabel separator="horizontal" rastersize="0x10"/>
+            <IupLabel rastersize="0x10"/>
             <IupHbox>
                 <IupLabel expand="horizontal"/>
-                <IupButton title="&Save"/>
+                <IupButton p:name="account_save" title="&Save" rastersize="60x0"/>
                 <IupLabel rastersize="10x0"/>
-                <IupButton title="&Cancel"/>
+                <IupButton p:name="account_cancel" title="&Cancel" rastersize="60x0"/>
             </IupHbox>
         </IupVbox>
     </IupFrame>
