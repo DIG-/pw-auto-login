@@ -10,6 +10,8 @@
 namespace DIG {
 namespace Crypto {
 
+#ifndef DISABLE_ENCRYPT
+
 const uint_fast8_t BLOCK_SIZE = 16;
 
 Err extract_key(uint8_t (&key)[32], const std::string& _key) {
@@ -101,6 +103,24 @@ Err decrypt(std::ostream& output,
   }
   return Err::OK;
 }
+
+#else
+
+Err encrypt(std::ostream& output,
+            std::istream& input,
+            const std::string& _key) {
+  output << input;
+  return Err::OK;
+}
+
+Err decrypt(std::ostream& output,
+            std::istream& input,
+            const std::string& _key) {
+  output << input;
+  return Err::OK;
+}
+
+#endif
 
 std::string random(const uint_fast8_t& length) {
   std::random_device rd;
