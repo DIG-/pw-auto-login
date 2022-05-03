@@ -73,6 +73,24 @@ void apply(Data::Account& account) {
   }
 }
 
+void fill(Data::Account& account) {
+  IupSetAttribute(account_username, "VALUE", account.username.c_str());
+  IupSetAttribute(account_password, "VALUE", account.password.c_str());
+  IupSetAttribute(account_character, "VALUE", account.character.c_str());
+  IupSetAttribute(account_cmd, "VALUE", account.command_line.c_str());
+  if (!account.use64.has_value()) {
+    IupSetAttribute(account_64_default, "VALUE", "ON");
+  } else if (account.use64.value()) {
+    IupSetAttribute(account_64_yes, "VALUE", "ON");
+  } else {
+    IupSetAttribute(account_64_no, "VALUE", "ON");
+  }
+  if (account.server.has_value()) {
+    IupSetAttribute(account_server, "VALUE",
+                    account.server.value().name.c_str());
+  }
+}
+
 bool show_dialog(Data::Account& account, bool edit) {
   dialog = IupDialog(create_layout());
   bool save = false;
@@ -113,6 +131,8 @@ bool show_dialog(Data::Account& account, bool edit) {
     }
     IupSetAttribute(account_server, std::to_string(++count).c_str(), nullptr);
   }
+
+  fill(account);
 
   IupPopup(dialog, IUP_CENTER, IUP_CENTER);
   return save;
