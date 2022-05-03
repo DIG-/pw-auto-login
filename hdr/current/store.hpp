@@ -14,6 +14,7 @@ extern Data::AccountStore instance;
 Err open(const std::filesystem::path&, const std::string&);
 Err open(const Data::AccountStoreInfo&);
 Err open_first();
+Err save();
 
 }  // namespace AccountStore
 }  // namespace DIG
