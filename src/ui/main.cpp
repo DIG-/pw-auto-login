@@ -182,6 +182,7 @@ void run_main() {
       return;
     }
   }
+  AccountStore::open_first();
   Main::create();
   IupMainLoop();
 }
