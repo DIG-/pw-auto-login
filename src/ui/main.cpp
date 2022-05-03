@@ -7,8 +7,10 @@
 #include "current/config.hpp"
 #include "current/server.hpp"
 #include "current/store.hpp"
+#include "game.hpp"
 #include "os.hpp"
 #include "store.hpp"
+#include "ui/account.hpp"
 
 namespace DIG {
 namespace UI {
@@ -114,6 +116,23 @@ void create() {
 
   IupSetCallback(account_list, "VALUECHANGED_CB", [](Ihandle* ih) -> int {
     update_selection();
+    return 0;
+  });
+  IupSetCallback(account_add, "ACTION", [](Ihandle* ih) -> int {
+    if (Account::add_account()) {
+      update_account_store();
+      select_account(AccountStore::instance.accounts.size() - 1);
+    }
+    return 0;
+  });
+  IupSetCallback(account_edit, "ACTION", [](Ihandle* ih) -> int {
+    if (Account::edit_account(get_selection())) {
+      update_account_store();
+    }
+    return 0;
+  });
+  IupSetCallback(account_launch, "ACTION", [](Ihandle* ih) -> int {
+    Game::login(get_selected_account());
     return 0;
   });
 
