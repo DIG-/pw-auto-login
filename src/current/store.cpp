@@ -28,7 +28,7 @@ Err open_first() {
 }
 
 Err save() {
-  save(instance, current_path, current_key);
+  return save(instance, current_path, current_key);
 }
 
 }  // namespace AccountStore
