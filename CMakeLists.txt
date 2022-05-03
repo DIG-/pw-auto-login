@@ -12,6 +12,8 @@ find_package(Filesystem REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(cxxopts REQUIRED)
 
+option(DISABLE_ENCRYPT "Disable crypto" OFF)
+
 add_executable(pw-auto-login)
 set_target_properties(pw-auto-login PROPERTIES
             CXX_STANDARD 17
@@ -43,3 +45,7 @@ target_link_libraries(pw-auto-login ${MBEDTLS_LIBRARIES})
 target_link_libraries(pw-auto-login std::filesystem)
 target_link_libraries(pw-auto-login nlohmann_json::nlohmann_json)
 target_link_libraries(pw-auto-login cxxopts::cxxopts)
+
+if (DISABLE_ENCRYPT)
+  add_definitions(-DDISABLE_ENCRYPT)
+endif()
