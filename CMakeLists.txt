@@ -24,7 +24,7 @@ else()
   configure_file(res/app32.i.manifest res/app.manifest)
 endif()
 
-add_executable(pw-auto-login)
+add_executable(pw-auto-login WIN32)
 set_target_properties(pw-auto-login PROPERTIES
             CXX_STANDARD 17
 )
