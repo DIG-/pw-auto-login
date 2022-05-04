@@ -10,6 +10,7 @@ void to_json(nlohmann::json& json, const Config& config) {
   json = nlohmann::json{{"game", config.game},
                         {"stores", config.stores},
                         {"use64", config.use64},
+                        {"allow_server", config.allow_server},
                         {"command_line", config.command_line}};
 }
 
@@ -18,6 +19,7 @@ void from_json(const nlohmann::json& json, Config& config) {
   json.at("game").get_to(config.game);
   json.at("stores").get_to(config.stores);
   json.at("use64").get_to(config.use64);
+  json.at("allow_server").get_to(config.allow_server);
   json.at("command_line").get_to(config.command_line);
 }
 
