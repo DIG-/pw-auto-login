@@ -1,6 +1,7 @@
 #include "crypto.hpp"
 
 #include <mbedtls/aes.h>
+#include <mbedtls/base64.h>
 #include <algorithm>
 #include <chrono>
 #include <cstring>
@@ -120,17 +121,40 @@ Err decrypt(std::ostream& output,
   return Err::OK;
 }
 
+#endif
+
 Err encode(std::ostream& output, std::istream& input) {
-  output << input.rdbuf();
+  constexpr auto LEN = 24;
+  constexpr auto LEN_O = 4 * LEN / 3;
+  char input_b[LEN];
+  char output_b[LEN_O];
+  std::size_t o_len = 0;
+  while (input.good()) {
+    input.read(input_b, LEN);
+    mbedtls_base64_encode((unsigned char*)output_b, LEN_O, &o_len,
+                          (unsigned char*)input_b, input.gcount());
+    output.write(output_b, o_len);
+  }
+
   return Err::OK;
 }
 
 Err dencode(std::ostream& output, std::istream& input) {
-  output << input.rdbuf();
+  constexpr auto LEN = 24;
+  constexpr auto LEN_O = 3 * LEN / 4;
+  char input_b[LEN];
+  char output_b[LEN_O];
+  std::size_t o_len = 0;
+  while (input.good()) {
+    input.read(input_b, LEN);
+    mbedtls_base64_decode((unsigned char*)output_b, LEN_O, &o_len,
+                          (unsigned char*)input_b, input.gcount());
+    output.write(output_b, o_len);
+  }
+
+  return Err::OK;
   return Err::OK;
 }
-
-#endif
 
 std::string random(const uint_fast8_t& length) {
   std::random_device rd;
