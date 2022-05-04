@@ -15,14 +15,25 @@ Data::AccountStore read(const Data::AccountStoreInfo& info) {
 
 Data::AccountStore read(const std::filesystem::path& filename,
                         const std::string& key) {
+  Data::AccountStore store;
+  read(store, filename, key);
+  return store;
+}
+
+Err read(Data::AccountStore& store, const Data::AccountStoreInfo& info) {
+  return read(store, info.file, info.key);
+}
+
+Err read(Data::AccountStore& store,
+         const std::filesystem::path& filename,
+         const std::string& key) {
   std::ifstream file(filename, std::ifstream::binary);
   std::stringstream buffer;
   Crypto::decrypt(buffer, file, key);
   nlohmann::json json;
   buffer >> json;
-  Data::AccountStore store;
   json.get_to(store);
-  return store;
+  return Err::OK;
 }
 
 Err save(const Data::AccountStore& store, const Data::AccountStoreInfo& info) {

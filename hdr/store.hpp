@@ -11,6 +11,8 @@ namespace AccountStore {
 
 Data::AccountStore read(const std::filesystem::path&, const std::string&);
 Data::AccountStore read(const Data::AccountStoreInfo&);
+Err read(Data::AccountStore&, const std::filesystem::path&, const std::string&);
+Err read(Data::AccountStore&, const Data::AccountStoreInfo&);
 
 Err save(const Data::AccountStore&,
          const std::filesystem::path&,
