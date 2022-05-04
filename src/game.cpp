@@ -4,6 +4,7 @@
 #include <sstream>
 #include "crypto.hpp"
 #include "current/config.hpp"
+#include "os.hpp"
 
 namespace DIG {
 namespace Game {
@@ -51,9 +52,8 @@ Err login(const Data::Account& account) {
     executable = element / "elementclient_64.exe";
   }
 
-  // TODO: Launch game
-
-  return Err::NOT_IMPLEMENTED;
+  return OS::launch(require_adm, executable, path, command_params.str(),
+                    account.character);
 }
 
 }  // namespace Game
