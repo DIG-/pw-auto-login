@@ -120,6 +120,16 @@ Err decrypt(std::ostream& output,
   return Err::OK;
 }
 
+Err encode(std::ostream& output, std::istream& input) {
+  output << input.rdbuf();
+  return Err::OK;
+}
+
+Err dencode(std::ostream& output, std::istream& input) {
+  output << input.rdbuf();
+  return Err::OK;
+}
+
 #endif
 
 std::string random(const uint_fast8_t& length) {

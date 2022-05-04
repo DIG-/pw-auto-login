@@ -40,10 +40,11 @@ void apply(Data::Account& account) {
     account.key = Crypto::random(32);
   }
   if (encrypt) {
-    std::stringstream input(IupGetAttribute(account_password, "VALUE"));
-    std::stringstream output;
-    Crypto::encrypt(output, input, account.key);
-    account.password = output.str();
+    std::stringstream value(IupGetAttribute(account_password, "VALUE"));
+    std::stringstream temp;
+    Crypto::encrypt(temp, value, account.key);
+    Crypto::encode(value, temp);
+    account.password = value.str();
   }
 
   // Update 64 bits
