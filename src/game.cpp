@@ -12,7 +12,7 @@ namespace Game {
 Err login(const Data::Account& account) {
   auto& config = Config::instance;
   Err e = Err::OK;
-  const auto element = config.path / "element";
+  const auto element = config.game / "element";
 
   // Check if require ADM to launch game
   bool require_adm = false;
@@ -33,6 +33,8 @@ Err login(const Data::Account& account) {
       return e;
     value.str("");
     e = Crypto::decrypt(value, temp, account.key);
+    if (e != Err::OK)
+      return e;
     password = value.str();
   }
 
@@ -40,7 +42,8 @@ Err login(const Data::Account& account) {
     // TODO: Select server
   }
 
-  std::stringstream command_params(config.command_line);
+  std::stringstream command_params;
+  command_params << config.command_line;
   command_params << " " << account.command_line;
   command_params << " user:" << account.username;
   command_params << " pwd:" << password;
