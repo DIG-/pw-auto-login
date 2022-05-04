@@ -52,7 +52,8 @@ Err login(const Data::Account& account) {
   auto path = element;
   auto executable = element / "elementclient.exe";
   if (use64) {
-    executable = element / "elementclient_64.exe";
+    path = path / "x64";
+    executable = path / "elementclient_64.exe";
   }
 
   return OS::launch(require_adm, executable, path, command_params.str(),
