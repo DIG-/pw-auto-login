@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <sstream>
 #include "crypto.hpp"
+#include "current/config.hpp"
 #include "current/server.hpp"
 #include "current/store.hpp"
 #include "data/account.hpp"
@@ -58,19 +59,21 @@ void apply(Data::Account& account) {
   }
 
   // Update Server
-  auto server_select = IupGetAttribute(account_server, "VALUE");
-  std::string server = "0";
-  if (server_select != nullptr) {
-    server = server_select;
-  }
-  if (server.empty()) {
-    account.server.reset();
-  } else if (Server::list.size() > 0) {
-    auto index = std::stoi(server) - 1;
-    if (index < 0 || index >= Server::list.size()) {
+  if (Config::instance.allow_server) {
+    auto server_select = IupGetAttribute(account_server, "VALUE");
+    std::string server = "0";
+    if (server_select != nullptr) {
+      server = server_select;
+    }
+    if (server.empty()) {
       account.server.reset();
-    } else {
-      account.server.emplace(Server::list[index]);
+    } else if (Server::list.size() > 0) {
+      auto index = std::stoi(server) - 1;
+      if (index < 0 || index >= Server::list.size()) {
+        account.server.reset();
+      } else {
+        account.server.emplace(Server::list[index]);
+      }
     }
   }
 }
@@ -90,6 +93,11 @@ void fill(Data::Account& account) {
   if (account.server.has_value()) {
     IupSetAttribute(account_server, "VALUESTRING",
                     account.server.value().name.c_str());
+  }
+  if (Config::instance.allow_server) {
+    IupSetAttribute(account_server, "ACTIVE", "YES");
+  } else {
+    IupSetAttribute(account_server, "ACTIVE", "NO");
   }
 }
 
@@ -122,7 +130,6 @@ bool show_dialog(Data::Account& account, bool edit) {
   });
 
   {
-    // TODO: Check if server selection is enabled
     if (Server::list.empty()) {
       Server::read();
     }

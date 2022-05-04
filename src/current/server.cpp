@@ -36,6 +36,9 @@ inline std::vector<std::wstring> split(const std::wstring& s, wchar_t delim) {
 }
 
 Err read() {
+  if(!Config::instance.allow_server){
+    return Err::OK;
+  }
   auto filename =
       ((Config::instance.game / "patcher") / "server") / "serverlist.txt";
   if (!std::filesystem::exists(filename)) {
