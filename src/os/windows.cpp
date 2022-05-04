@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <cstring>
+#include <iostream>
 
 namespace DIG {
 namespace OS {
@@ -40,19 +41,21 @@ BOOL __stdcall EnumProcessWindowsProc(HWND hwnd, LPARAM lParam) {
 }
 
 Err launch(const bool require_adm,
-           const std::filesystem::path& executable,
-           const std::filesystem::path& workdir,
+           const std::filesystem::path& executable_,
+           const std::filesystem::path& workdir_,
            const std::string& params,
            const std::string& window_title) {
+  std::string executable = executable_.string();
+  std::string workdir = workdir_.string();
   SHELLEXECUTEINFO sei = {0};
   sei.cbSize = sizeof(SHELLEXECUTEINFO);
   sei.fMask = SEE_MASK_NOCLOSEPROCESS;
   sei.hwnd = nullptr;
   sei.lpVerb = require_adm ? "runas" : "open";
-  sei.lpFile = executable.string().c_str();
+  sei.lpFile = executable.c_str();
   sei.lpParameters = params.c_str();
-  sei.lpDirectory = workdir.string().c_str();
-  sei.nShow = SW_HIDE;
+  sei.lpDirectory = workdir.c_str();
+  sei.nShow = SW_SHOWNORMAL;
   sei.hInstApp = nullptr;
   if (ShellExecuteExA(&sei)) {
     if (window_title.empty()) {
