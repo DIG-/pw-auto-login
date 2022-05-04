@@ -43,15 +43,18 @@ bool configure_game_executable() {
   Config::instance.game = IupGetAttribute(dialog, "VALUE");
   std::filesystem::path parent = Config::instance.game;
   while (parent.has_parent_path()) {
-    parent = parent.parent_path();
+    auto temp = parent.parent_path();
+    if (temp == parent) {
+      break;
+    }
+    parent = temp;
     auto patcher = parent / "patcher";
     if (std::filesystem::exists(patcher) &&
         std::filesystem::is_directory(patcher)) {
       break;
     }
   }
-  if (!parent.has_parent_path() &&
-      std::filesystem::exists(parent / "patcher")) {
+  if (!std::filesystem::exists(parent / "patcher")) {
     show_error_message("Failed to find game installation root.");
     return false;
   }
