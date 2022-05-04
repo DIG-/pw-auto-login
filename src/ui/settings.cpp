@@ -1,8 +1,11 @@
 #include "ui/settings.hpp"
 
 #include <iup.h>
+#include <algorithm>
 #include <cstring>
+#include <iostream>
 #include "current/config.hpp"
+#include "ui.hpp"
 
 namespace DIG {
 namespace UI {
@@ -25,6 +28,34 @@ void open_settings() {
                    game, &use64, &allow_server, cmd)) {
     return;
   }
+
+  // Game path
+  std::filesystem::path parent = game;
+  while (parent.has_parent_path()) {
+    auto temp = parent.parent_path();
+    if (temp == parent) {
+      break;
+    }
+    parent = temp;
+    auto patcher = parent / "patcher";
+    if (std::filesystem::exists(patcher) &&
+        std::filesystem::is_directory(patcher)) {
+      break;
+    }
+  }
+  if (!std::filesystem::exists(parent / "patcher")) {
+    show_error_message("Failed to find game installation root.");
+  } else {
+    config.game = parent;
+  }
+
+  // Format command line
+  config.command_line = cmd;
+  std::replace(config.command_line.begin(), config.command_line.end(), '\n',
+               ' ');
+  config.use64 = use64 == 0;
+  config.allow_server = allow_server == 0;
+  Config::save();
 }
 
 }  // namespace Settings
