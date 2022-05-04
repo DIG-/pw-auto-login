@@ -125,9 +125,9 @@ Err decrypt(std::ostream& output,
 
 Err encode(std::ostream& output, std::istream& input) {
   constexpr auto LEN = 24;
-  constexpr auto LEN_O = 4 * LEN / 3;
-  char input_b[LEN];
-  char output_b[LEN_O];
+  constexpr auto LEN_O = (4 * LEN / 3) + 1;
+  char input_b[LEN] = {0};
+  char output_b[LEN_O] = {0};
   std::size_t o_len = 0;
   while (input.good()) {
     input.read(input_b, LEN);
@@ -141,9 +141,9 @@ Err encode(std::ostream& output, std::istream& input) {
 
 Err dencode(std::ostream& output, std::istream& input) {
   constexpr auto LEN = 24;
-  constexpr auto LEN_O = 3 * LEN / 4;
-  char input_b[LEN];
-  char output_b[LEN_O];
+  constexpr auto LEN_O = (3 * LEN / 4) + 1;
+  char input_b[LEN] = {0};
+  char output_b[LEN_O] = {0};
   std::size_t o_len = 0;
   while (input.good()) {
     input.read(input_b, LEN);
