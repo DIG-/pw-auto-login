@@ -2,6 +2,7 @@
 
 #include <iup.h>
 #include <algorithm>
+#include <iostream>
 #include <sstream>
 #include "crypto.hpp"
 #include "current/config.hpp"
@@ -41,11 +42,12 @@ void apply(Data::Account& account) {
     account.key = Crypto::random(32);
   }
   if (encrypt) {
-    std::stringstream value(IupGetAttribute(account_password, "VALUE"));
-    std::stringstream temp;
-    Crypto::encrypt(temp, value, account.key);
-    Crypto::encode(value, temp);
-    account.password = value.str();
+    std::stringstream plain(IupGetAttribute(account_password, "VALUE"));
+    std::stringstream encrypted("");
+    Crypto::encrypt(encrypted, plain, account.key);
+    std::stringstream encoded("");
+    Crypto::encode(encoded, encrypted);
+    account.password = encoded.str();
   }
 
   // Update 64 bits
