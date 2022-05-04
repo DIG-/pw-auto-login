@@ -18,9 +18,15 @@ template <>
 void from_json(const nlohmann::json& json, Config& config) {
   json.at("game").get_to(config.game);
   json.at("stores").get_to(config.stores);
-  json.at("use64").get_to(config.use64);
-  json.at("allow_server").get_to(config.allow_server);
-  json.at("command_line").get_to(config.command_line);
+  if (json.contains("use64")) {
+    json.at("use64").get_to(config.use64);
+  }
+  if (json.contains("allow_server")) {
+    json.at("allow_server").get_to(config.allow_server);
+  }
+  if (json.contains("command_line")) {
+    json.at("command_line").get_to(config.command_line);
+  }
 }
 
 template <>
