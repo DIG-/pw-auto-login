@@ -149,12 +149,29 @@ bool add_account() {
   }
   return edited;
 }
+
 bool edit_account(const uint_fast16_t& index) {
   auto edited = show_dialog(AccountStore::instance.accounts[index], true);
   if (edited) {
     AccountStore::save();
   }
   return edited;
+}
+
+bool rem_account(const uint_fast16_t& index) {
+  auto& account = AccountStore::instance.accounts[index];
+  auto answer = IupMessageAlarm(
+      nullptr, "Remove account",
+      (std::string("Confirm remove account ") + account.character + "?")
+          .c_str(),
+      "YESNO");
+  if (answer == 1) {
+    AccountStore::instance.accounts.erase(
+        AccountStore::instance.accounts.begin() + index);
+    AccountStore::save();
+    return true;
+  }
+  return false;
 }
 
 }  // namespace Account

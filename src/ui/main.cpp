@@ -135,6 +135,12 @@ void create() {
     }
     return 0;
   });
+  IupSetCallback(account_rem, "ACTION", [](Ihandle* ih) -> int {
+    if (Account::rem_account(get_selection())) {
+      update_account_store();
+    }
+    return 0;
+  });
   IupSetCallback(account_launch, "ACTION", [](Ihandle* ih) -> int {
     Game::login(get_selected_account());
     return 0;
