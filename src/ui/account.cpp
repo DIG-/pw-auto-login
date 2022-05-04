@@ -57,18 +57,19 @@ void apply(Data::Account& account) {
   }
 
   // Update Server
-  std::string server = IupGetAttribute(account_server, "VALUE");
+  auto server_select = IupGetAttribute(account_server, "VALUE");
+  std::string server = "0";
+  if (server_select != nullptr) {
+    server = server_select;
+  }
   if (server.empty()) {
     account.server.reset();
-  } else if (!account.server.has_value() ||
-             server.compare(account.server.value().name) != 0) {
-    auto found = std::find_if(
-        Server::list.begin(), Server::list.end(),
-        [&server](auto& it) -> bool { return server.compare(it.name) == 0; });
-    if (found != Server::list.end()) {
-      account.server.emplace(*found);
-    } else {
+  } else if (Server::list.size() > 0) {
+    auto index = std::stoi(server) - 1;
+    if (index < 0 || index >= Server::list.size()) {
       account.server.reset();
+    } else {
+      account.server.emplace(Server::list[index]);
     }
   }
 }
@@ -86,7 +87,7 @@ void fill(Data::Account& account) {
     IupSetAttribute(account_64_no, "VALUE", "ON");
   }
   if (account.server.has_value()) {
-    IupSetAttribute(account_server, "VALUE",
+    IupSetAttribute(account_server, "VALUESTRING",
                     account.server.value().name.c_str());
   }
 }
