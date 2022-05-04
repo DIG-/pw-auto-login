@@ -26,16 +26,16 @@ Err login(const Data::Account& account) {
   // Get real password
   std::string password;
   {
-    std::stringstream value(account.password);
-    std::stringstream temp;
-    e = Crypto::dencode(temp, value);
+    std::stringstream encoded(account.password);
+    std::stringstream encrypted;
+    e = Crypto::dencode(encrypted, encoded);
     if (e != Err::OK)
       return e;
-    value.str("");
-    e = Crypto::decrypt(value, temp, account.key);
+    std::stringstream plain;
+    e = Crypto::decrypt(plain, encrypted, account.key);
     if (e != Err::OK)
       return e;
-    password = value.str();
+    password = plain.str();
   }
 
   if (config.allow_server && account.server.has_value()) {
