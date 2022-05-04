@@ -75,7 +75,11 @@ bool create_default_storage() {
 }
 
 int_fast16_t get_selection() {
-  std::string value = IupGetAttribute(account_list, "VALUE");
+  auto attr = IupGetAttribute(account_list, "VALUE");
+  std::string value;
+  if (attr != nullptr) {
+    value = attr;
+  }
   int_fast16_t index = -1;
   if (!value.empty()) {
     index = std::stoi(value) - 1;
