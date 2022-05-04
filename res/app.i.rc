@@ -3,7 +3,7 @@ MAIN_ICON ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/app.ico"
 /****************************************************/
 /* Applications can change or remove this */
 
-VS_VERSION_INFO VERSIONINFO
+1 VERSIONINFO
  FILEVERSION ${VERSION_MAJOR},${VERSION_MINOR},${VERSION_PATCH},0
  PRODUCTVERSION ${VERSION_MAJOR},${VERSION_MINOR},${VERSION_PATCH},0
 BEGIN

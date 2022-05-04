@@ -122,6 +122,7 @@ void create() {
   IupSetAttribute(dialog, "TITLE", "PW Auto Login");
   IupSetAttribute(dialog, "RESIZE", "NO");
   IupSetAttribute(dialog, "MENU", MENU);
+  IupSetAttribute(dialog, "ICON", "MAIN_ICON");
 
   IupSetAttribute(account_edit, "ACTIVE", "NO");
   IupSetAttribute(account_rem, "ACTIVE", "NO");

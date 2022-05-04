@@ -145,6 +145,14 @@ bool show_dialog(Data::Account& account, bool edit) {
 
   fill(account);
 
+  IupSetAttribute(dialog, "ICON", "MAIN_ICON");
+  IupSetAttribute(dialog, "RESIZE", "NO");
+  IupSetAttribute(dialog, "MINBOX", "NO");
+  if (edit) {
+    IupSetAttribute(dialog, "TITLE", "Edit account");
+  } else {
+    IupSetAttribute(dialog, "TITLE", "Add account");
+  }
   IupPopup(dialog, IUP_CENTER, IUP_CENTER);
   return save;
 }
