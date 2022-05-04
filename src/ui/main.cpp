@@ -11,6 +11,7 @@
 #include "os.hpp"
 #include "store.hpp"
 #include "ui/account.hpp"
+#include "ui/settings.hpp"
 
 namespace DIG {
 namespace UI {
@@ -92,13 +93,18 @@ Data::Account& get_selected_account() {
 }
 
 void create_menu() {
+  auto settings = IupItem("Settings", nullptr);
   // clang-format off
   auto menu = IupMenu(
-    IupItem("Settings", SETTINGS_ACTION),
+    settings,
     nullptr
   );
   // clang-format on
   IupSetHandle(MENU, menu);
+  IupSetCallback(settings, "ACTION", [](Ihandle* ih) -> int {
+    Settings::open_settings();
+    return 0;
+  });
 }
 
 void create() {

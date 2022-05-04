@@ -37,6 +37,7 @@ target_sources(pw-auto-login PRIVATE
     src/ui/account.cpp
     src/ui/main.cpp
     src/ui/prompt.cpp
+    src/ui/settings.cpp
     src/ui/ui.cpp
     src/store.cpp
 )
