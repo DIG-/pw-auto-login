@@ -18,7 +18,7 @@ Err open(const Data::AccountStoreInfo& info) {
 Err open(const std::filesystem::path& filename, const std::string& key) {
   current_path = filename;
   current_key = key;
-  instance = read(filename, key);
+  read(instance, filename, key);
   UI::Main::update_account_store();
   return Err::OK;
 }
