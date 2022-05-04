@@ -109,14 +109,14 @@ Err decrypt(std::ostream& output,
 Err encrypt(std::ostream& output,
             std::istream& input,
             const std::string& _key) {
-  output << input;
+  output << input.rdbuf();
   return Err::OK;
 }
 
 Err decrypt(std::ostream& output,
             std::istream& input,
             const std::string& _key) {
-  output << input;
+  output << input.rdbuf();
   return Err::OK;
 }
 
