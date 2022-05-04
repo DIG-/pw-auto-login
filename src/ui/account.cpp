@@ -43,7 +43,7 @@ void apply(Data::Account& account) {
     std::stringstream input(IupGetAttribute(account_password, "VALUE"));
     std::stringstream output;
     Crypto::encrypt(output, input, account.key);
-    output.str(account.password);
+    account.password = output.str();
   }
 
   // Update 64 bits
