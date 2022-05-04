@@ -140,6 +140,8 @@ void create() {
     return 0;
   });
 
+  update_account_store();
+
   IupShow(dialog);
 }
 
