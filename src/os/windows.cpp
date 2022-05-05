@@ -94,7 +94,7 @@ Err create_link(const Data::Account& account) {
     // Set the path to the shortcut target and add the description.
     TCHAR szFileName[MAX_PATH];
     GetModuleFileName(NULL, szFileName, MAX_PATH);
-    std::string arguments = std::string("-k ") + std::to_string(index) +
+    std::string arguments = std::string("-s ") + std::to_string(index) +
                             std::string(" -c ") + account.character;
     std::string description = account.character + " - Login";
     psl->SetPath(szFileName);
@@ -110,7 +110,8 @@ Err create_link(const Data::Account& account) {
 
       // Ensure that the string is Unicode.
       std::filesystem::path user_profile = getenv("USERPROFILE");
-      std::string output = (user_profile / "Desktop").string();
+      std::string output =
+          ((user_profile / "Desktop") / (account.character + ".lnk")).string();
       MultiByteToWideChar(CP_ACP, 0, output.c_str(), -1, wsz, MAX_PATH);
 
       // Add code here to check return value from MultiByteWideChar
