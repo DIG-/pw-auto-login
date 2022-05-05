@@ -145,7 +145,7 @@ bool show_dialog(Data::Account& account, bool edit) {
 
   fill(account);
 
-  IupSetAttribute(dialog, "ICON", "MAIN_ICON");
+  IupSetAttribute(dialog, "ICON", "ZZZZZ");
   IupSetAttribute(dialog, "RESIZE", "NO");
   IupSetAttribute(dialog, "MINBOX", "NO");
   if (edit) {
