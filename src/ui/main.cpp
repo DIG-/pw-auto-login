@@ -26,6 +26,7 @@ Ihandle* account_list;
 Ihandle* account_add;
 Ihandle* account_edit;
 Ihandle* account_rem;
+Ihandle* account_link;
 Ihandle* account_launch;
 
 bool configure_game_executable() {
@@ -117,6 +118,7 @@ void create() {
   account_add = IupGetHandle("account_add");
   account_edit = IupGetHandle("account_edit");
   account_rem = IupGetHandle("account_rem");
+  account_link = IupGetHandle("account_link");
   account_launch = IupGetHandle("account_launch");
 
   IupSetAttribute(dialog, "TITLE", "PW Auto Login");
@@ -126,7 +128,13 @@ void create() {
 
   IupSetAttribute(account_edit, "ACTIVE", "NO");
   IupSetAttribute(account_rem, "ACTIVE", "NO");
+  IupSetAttribute(account_link, "ACTIVE", "NO");
   IupSetAttribute(account_launch, "ACTIVE", "NO");
+
+  IupSetAttribute(IupGetHandle("account_move_top"), "ACTIVE", "NO");
+  IupSetAttribute(IupGetHandle("account_move_above"), "ACTIVE", "NO");
+  IupSetAttribute(IupGetHandle("account_move_bellow"), "ACTIVE", "NO");
+  IupSetAttribute(IupGetHandle("account_move_bottom"), "ACTIVE", "NO");
 
   IupSetCallback(account_list, "VALUECHANGED_CB", [](Ihandle* ih) -> int {
     update_selection();
@@ -170,11 +178,13 @@ void update_selection() {
   if (index < 0) {
     IupSetAttribute(account_edit, "ACTIVE", "NO");
     IupSetAttribute(account_rem, "ACTIVE", "NO");
+    IupSetAttribute(account_link, "ACTIVE", "NO");
     IupSetAttribute(account_launch, "ACTIVE", "NO");
     return;
   }
   IupSetAttribute(account_edit, "ACTIVE", "YES");
   IupSetAttribute(account_rem, "ACTIVE", "YES");
+  IupSetAttribute(account_link, "ACTIVE", "YES");
   IupSetAttribute(account_launch, "ACTIVE", "YES");
 }
 

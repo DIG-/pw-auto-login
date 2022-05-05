@@ -1,16 +1,24 @@
 <p:layout>
     <IupFrame>
-        <IupVbox>
+        <IupHbox>
+            <IupVbox>
+                <IupButton p:name="account_move_top" title="/\\\n/\\" expand="vertical"/>
+                <IupButton p:name="account_move_above" title="/\\" expand="vertical"/>
+                <IupButton p:name="account_move_bellow" title="\\/" expand="vertical"/>
+                <IupButton p:name="account_move_bottom" title="\\/\n\\/" expand="vertical"/>
+            </IupVbox>
             <IupList p:name="account_list" rastersize="200x150"/>
-            <IupHbox>
-                <IupButton p:name="account_add" rastersize="60x0" title="&Add"/>
-                <IupLabel expand="horizontal"/>
-                <IupButton p:name="account_edit" rastersize="60x0" title="&Edit"/>
-                <IupLabel expand="horizontal"/>
-                <IupButton p:name="account_rem" rastersize="60x0" title="&Remove"/>
-            </IupHbox>
-            <IupLabel rastersize="10x10"/>
-            <IupButton p:name="account_launch" expand="horizontal" title="&Launch"/>
-        </IupVbox>
+            <IupVbox>
+                <IupButton p:name="account_add" rastersize="100x0" title="&Add"/>
+                <IupButton p:name="account_edit" rastersize="100x0" title="&Edit"/>
+                <IupButton p:name="account_rem" rastersize="100x0" title="&Remove"/>
+                <IupLabel expand="vertical"/>
+                <IupLabel separator="horizontal"/>
+                <IupLabel rastersize="2x2"/>
+                <IupButton p:name="account_link" rastersize="100x0" title="&Create Link"/>
+                <IupLabel rastersize="5x5"/>
+                <IupButton p:name="account_launch" expand="horizontal" title="&Launch"/>
+            </IupVbox>
+        </IupHbox>
     </IupFrame>
 </p:layout>
