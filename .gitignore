@@ -68,3 +68,8 @@ _deps
 
 /build
 /res/temp
+/install/output
+/install/x64/*
+!/install/x64/.dummy
+/install/x86/*
+!/install/x86/.dummy
