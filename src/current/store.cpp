@@ -27,6 +27,16 @@ Err open_first() {
   return open(Config::instance.stores[0]);
 }
 
+uint_fast16_t get_index() {
+  auto& stores = Config::instance.stores;
+  for (uint_fast16_t i = 0; i < stores.size(); i++) {
+    if (stores[i].file == current_path) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 Err save() {
   return save(instance, current_path, current_key);
 }

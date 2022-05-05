@@ -4,6 +4,12 @@
 #include <windows.h>
 #include <cstring>
 #include <iostream>
+#include "current/config.hpp"
+#include "current/store.hpp"
+#include "objbase.h"
+#include "objidl.h"
+#include "shlguid.h"
+#include "shobjidl.h"
 
 namespace DIG {
 namespace OS {
@@ -71,6 +77,55 @@ Err launch(const bool require_adm,
     return Err::OK;
   }
   return Err::FAILED_TO_LAUNCH;
+}
+
+Err create_link(const Data::Account& account) {
+  auto& config = Config::instance;
+  auto index = AccountStore::get_index();
+
+  HRESULT hres;
+  IShellLink* psl;
+  CoInitialize(nullptr);
+  hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
+                          IID_IShellLink, (LPVOID*)&psl);
+  if (SUCCEEDED(hres)) {
+    IPersistFile* ppf;
+
+    // Set the path to the shortcut target and add the description.
+    TCHAR szFileName[MAX_PATH];
+    GetModuleFileName(NULL, szFileName, MAX_PATH);
+    std::string arguments = std::string("-k ") + std::to_string(index) +
+                            std::string(" -c ") + account.character;
+    std::string description = account.character + " - Login";
+    psl->SetPath(szFileName);
+    psl->SetArguments(arguments.c_str());
+    psl->SetDescription((description).c_str());
+
+    // Query IShellLink for the IPersistFile interface, used for saving the
+    // shortcut in persistent storage.
+    hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
+
+    if (SUCCEEDED(hres)) {
+      WCHAR wsz[MAX_PATH];
+
+      // Ensure that the string is Unicode.
+      std::filesystem::path user_profile = getenv("USERPROFILE");
+      std::string output = (user_profile / "Desktop").string();
+      MultiByteToWideChar(CP_ACP, 0, output.c_str(), -1, wsz, MAX_PATH);
+
+      // Add code here to check return value from MultiByteWideChar
+      // for success.
+
+      // Save the link by calling IPersistFile::Save.
+      hres = ppf->Save(wsz, TRUE);
+      ppf->Release();
+      psl->Release();
+      return Err::OK;
+    }
+    psl->Release();
+  }
+
+  return Err::NOT_IMPLEMENTED;
 }
 
 }  // namespace OS

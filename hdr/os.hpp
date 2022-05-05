@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include "data/account.hpp"
 #include "error.hpp"
 
 namespace DIG {
@@ -12,6 +13,7 @@ Err launch(const bool require_adm,
            const std::filesystem::path& workdir,
            const std::string& params,
            const std::string& window_title = "");
+Err create_link(const Data::Account&);
 
 }  // namespace OS
 }  // namespace DIG
