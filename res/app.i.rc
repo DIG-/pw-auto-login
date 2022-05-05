@@ -1,4 +1,4 @@
-ZZZZZ ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/app.ico"
+AAAAA ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/app.ico"
 
 BLADEMASTER_01 ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/classes/blademaster/01.ico"
 WIZARD_01 ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/classes/wizard/01.ico"
