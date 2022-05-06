@@ -9,11 +9,11 @@
 namespace DIG {
 namespace Crypto {
 
-Err encrypt(std::ostream&, std::istream&, const std::string&);
-Err decrypt(std::ostream&, std::istream&, const std::string&);
-Err encode(std::ostream&, std::istream&);
-Err dencode(std::ostream&, std::istream&);
-std::string random(const uint_fast8_t&);
+Err encrypt(std::ostream&, std::istream&, const std::string&) noexcept;
+Err decrypt(std::ostream&, std::istream&, const std::string&) noexcept;
+Err encode(std::ostream&, std::istream&) noexcept;
+Err dencode(std::ostream&, std::istream&) noexcept;
+std::string random(const uint_fast8_t&) noexcept;
 
 }  // namespace Crypto
 }  // namespace DIG

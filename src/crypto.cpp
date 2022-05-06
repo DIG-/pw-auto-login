@@ -15,7 +15,7 @@ namespace Crypto {
 
 const uint_fast8_t BLOCK_SIZE = 16;
 
-Err extract_key(uint8_t (&key)[32], const std::string& _key) {
+Err extract_key(uint8_t (&key)[32], const std::string& _key) noexcept {
   uint_fast8_t key_length = std::min((uint8_t)32, (uint8_t)_key.length());
   memcpy(key, _key.c_str(), key_length);
   if (key_length < 32) {
@@ -26,7 +26,7 @@ Err extract_key(uint8_t (&key)[32], const std::string& _key) {
 
 Err encrypt(std::ostream& output,
             std::istream& input,
-            const std::string& _key) {
+            const std::string& _key) noexcept {
   uint8_t key[32];
   uint8_t iv[BLOCK_SIZE];
   uint8_t input_v[BLOCK_SIZE];
@@ -66,7 +66,7 @@ Err encrypt(std::ostream& output,
 
 Err decrypt(std::ostream& output,
             std::istream& input,
-            const std::string& _key) {
+            const std::string& _key) noexcept {
   uint8_t key[32];
   uint8_t iv[BLOCK_SIZE];
   uint8_t input_v[BLOCK_SIZE];
@@ -109,21 +109,21 @@ Err decrypt(std::ostream& output,
 
 Err encrypt(std::ostream& output,
             std::istream& input,
-            const std::string& _key) {
+            const std::string& _key) noexcept {
   output << input.rdbuf();
   return Err::OK;
 }
 
 Err decrypt(std::ostream& output,
             std::istream& input,
-            const std::string& _key) {
+            const std::string& _key) noexcept {
   output << input.rdbuf();
   return Err::OK;
 }
 
 #endif
 
-Err encode(std::ostream& output, std::istream& input) {
+Err encode(std::ostream& output, std::istream& input) noexcept {
   constexpr auto LEN = 24;
   constexpr auto LEN_O = (4 * LEN / 3) + 1;
   char input_b[LEN] = {0};
@@ -139,7 +139,7 @@ Err encode(std::ostream& output, std::istream& input) {
   return Err::OK;
 }
 
-Err dencode(std::ostream& output, std::istream& input) {
+Err dencode(std::ostream& output, std::istream& input) noexcept {
   constexpr auto LEN = 24;
   constexpr auto LEN_O = (3 * LEN / 4) + 1;
   char input_b[LEN] = {0};
@@ -156,7 +156,7 @@ Err dencode(std::ostream& output, std::istream& input) {
   return Err::OK;
 }
 
-std::string random(const uint_fast8_t& length) {
+std::string random(const uint_fast8_t& length) noexcept {
   std::random_device rd;
   std::uniform_int_distribution<uint8_t> dist(33, 125);
   std::stringstream ss;
