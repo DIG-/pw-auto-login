@@ -71,7 +71,11 @@ bool configure_game_executable() {
 bool create_default_storage() {
   Data::AccountStore store;
   Data::AccountStoreInfo info;
-  info.file = OS::data_dir() / "default.dat";
+  try {
+    info.file = OS::data_dir() / "default.dat";
+  } catch (Err error) {
+    return false;
+  }
   info.key = Crypto::random(32);
   AccountStore::save(store, info);
   Config::instance.stores.push_back(info);
