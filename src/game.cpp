@@ -50,13 +50,39 @@ Err login(const Data::Account& account) {
   }
 
   if (config.allow_server && account.server.has_value()) {
+    if (require_adm) {
+      return Err::REQUIRE_ADMIN;
+    }
     // TODO: Select server
-    std::stringstream encoded;
-    std::stringstream temp;
-    utf8_to_utf16le(temp, account.username);
-    Crypto::encode(encoded, temp);
-
-    return Err::NOT_IMPLEMENTED;
+    std::string line;
+    {
+      std::stringstream encoded;
+      std::stringstream t1;
+      utf8_to_utf16le(t1, account.username);
+      Crypto::encode(encoded, t1);
+      encoded << " ";
+      std::stringstream t2;
+      utf8_to_utf16le(t2, account.server.value().address + std::string(",") +
+                              account.server.value().name + ",0");
+      Crypto::encode(encoded, t2);
+      line = encoded.str();
+    }
+    const auto accounts_filename = (element / "userdata") / "accounts.txt";
+    std::fstream output(accounts_filename, std::ios::in | std::ios::out);
+    char buffer[5] = {0};
+    output.read(buffer, 4);
+    if (std::string("true").compare(buffer) != 0) {
+      output.close();
+      output.open(accounts_filename, std::ios::out | std::ios::trunc);
+      output << "true" << std::endl;
+    } else {
+      output.seekp(0, std::ios::end);
+    }
+    output << line << std::endl;
+    if (!output.good()) {
+      return Err::FAILED_TO_SELECT_SERVER;
+    }
+    output.close();
   }
 
   std::stringstream command_params;
