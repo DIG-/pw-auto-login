@@ -9,6 +9,7 @@ typedef enum {
   CAN_NOT_OPEN_FILE = 3,
   FILE_DOES_NOT_EXISTS = 4,
   FAILED_TO_LAUNCH = 5,
+  REQUIRE_ADMIN = 6,
 } Err;
 
 }
