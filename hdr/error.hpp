@@ -11,6 +11,7 @@ typedef enum {
   FAILED_TO_LAUNCH = 5,
   REQUIRE_ADMIN = 6,
   FAILED_TO_SELECT_SERVER = 7,
+  FAILED_TO_GET_APPDATA_FOLDER = 8,
 } Err;
 
 }

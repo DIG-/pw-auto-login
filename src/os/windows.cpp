@@ -14,14 +14,14 @@
 namespace DIG {
 namespace OS {
 
-std::filesystem::path data_dir() {
+std::filesystem::path data_dir() noexcept(false) {
   // Not best method, but works
   char* path = getenv("LOCALAPPDATA");
   if (path == nullptr || strlen(path) <= 0) {
     path = getenv("APPDATA");
   }
   if (path == nullptr || strlen(path) <= 0) {
-    throw "Failed to get system path";
+    throw Err::FAILED_TO_GET_APPDATA_FOLDER;
   }
   auto context = std::filesystem::path(path) / "DIG";
   return context / "PW-Auto-Login";

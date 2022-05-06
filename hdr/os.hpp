@@ -7,7 +7,7 @@
 namespace DIG {
 namespace OS {
 
-std::filesystem::path data_dir();
+std::filesystem::path data_dir() noexcept(false);
 Err launch(const bool require_adm,
            const std::filesystem::path& executable,
            const std::filesystem::path& workdir,
