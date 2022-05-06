@@ -1,5 +1,6 @@
 #include "game.hpp"
 
+#include <codecvt>
 #include <fstream>
 #include <sstream>
 #include "crypto.hpp"
@@ -8,6 +9,16 @@
 
 namespace DIG {
 namespace Game {
+
+Err utf8_to_utf16le(std::stringstream& output, const std::string& input) {
+  auto utf16 =
+      std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}
+          .from_bytes(input);
+  for (auto& c : utf16) {
+    output.write((char*)&c, 2);
+  }
+  return Err::OK;
+}
 
 Err login(const Data::Account& account) {
   auto& config = Config::instance;
@@ -40,6 +51,12 @@ Err login(const Data::Account& account) {
 
   if (config.allow_server && account.server.has_value()) {
     // TODO: Select server
+    std::stringstream encoded;
+    std::stringstream temp;
+    utf8_to_utf16le(temp, account.username);
+    Crypto::encode(encoded, temp);
+
+    return Err::NOT_IMPLEMENTED;
   }
 
   std::stringstream command_params;
