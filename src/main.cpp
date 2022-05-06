@@ -44,10 +44,9 @@ int main(int argc, char** argv) {
         return 1;
       }
       info = DIG::Config::instance.stores[index];
-    }else{
-      DIG::UI::show_error_message(
-            std::string("Require AccountStore"));
-        return 1;
+    } else {
+      DIG::UI::show_error_message(std::string("Require AccountStore"));
+      return 1;
     }
     if (result.count("account-store-password")) {
       info.key = result["account-store-password"].as<std::string>();
@@ -89,7 +88,10 @@ int main(int argc, char** argv) {
       }
     }
 
-    DIG::Game::login(*account);
+    auto e = DIG::Game::login(*account);
+    if (e != DIG::Err::OK) {
+      DIG::UI::show_game_launch_error(e);
+    }
 
     return 0;
   }

@@ -170,8 +170,7 @@ void create() {
   IupSetCallback(account_launch, "ACTION", [](Ihandle* ih) -> int {
     auto e = Game::login(get_selected_account());
     if (e != Err::OK) {
-      show_error_message(std::string("Failed to open game. #") +
-                         std::to_string(e));
+      show_game_launch_error(e);
     }
     return 0;
   });
