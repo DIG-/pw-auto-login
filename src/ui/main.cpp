@@ -76,7 +76,7 @@ bool create_default_storage() {
   AccountStore::save(store, info);
   Config::instance.stores.push_back(info);
   Config::save();
-  return false;
+  return true;
 }
 
 int_fast16_t get_selection() {
