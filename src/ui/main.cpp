@@ -164,6 +164,13 @@ void create() {
     if (e != Err::OK) {
       show_error_message(std::string("Failed to create link. #") +
                          std::to_string(e));
+    } else {
+      auto dlg = IupMessageDlg();
+      IupSetAttribute(dlg, "TITLE", "Shortcut created");
+      IupSetAttribute(dlg, "DIALOGTYPE", "INFORMATION");
+      IupSetAttribute(dlg, "VALUE",
+                      "Shortcut created on desktop successfully.");
+      IupPopup(dlg, IUP_CENTER, IUP_CENTER);
     }
     return 0;
   });
