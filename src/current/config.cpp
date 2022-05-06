@@ -9,12 +9,16 @@ namespace Config {
 
 Data::Config instance;
 
-const inline std::filesystem::path default_config() {
+const inline std::filesystem::path default_config() noexcept(false) {
   return OS::data_dir() / "config.json";
 }
 
 Err init() {
-  return init(default_config());
+  try {
+    return init(default_config());
+  } catch (Err error) {
+    return error;
+  }
 }
 
 Err init(const std::filesystem::path& path) {
@@ -37,7 +41,12 @@ Err init(const std::filesystem::path& path) {
 }
 
 Err save() {
-  auto path = instance.path.empty() ? default_config() : instance.path;
+  std::filesystem::path path;
+  try {
+    path = instance.path.empty() ? default_config() : instance.path;
+  } catch (Err error) {
+    return error;
+  }
   return save(path);
 }
 
