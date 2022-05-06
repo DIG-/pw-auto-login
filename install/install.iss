@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PW Auto Login"
-#define MyAppVersion "0.1.0"
+#define MyAppVersion "0.2.0"
 #define MyAppPublisher "DIG"
 #define MyAppURL "https://github.com/DIG-/pw-auto-login"
 #define MyAppExeName "pw-auto-login.exe"
