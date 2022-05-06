@@ -27,6 +27,20 @@ std::filesystem::path data_dir() {
   return context / "PW-Auto-Login";
 }
 
+std::string safe_name(const std::string& name) {
+  std::string output = name;
+  std::replace(output.begin(), output.end(), ':', '_');
+  std::replace(output.begin(), output.end(), '\\', '_');
+  std::replace(output.begin(), output.end(), '/', '_');
+  std::replace(output.begin(), output.end(), '|', '_');
+  std::replace(output.begin(), output.end(), '?', '_');
+  std::replace(output.begin(), output.end(), '*', '_');
+  std::replace(output.begin(), output.end(), '"', '_');
+  std::replace(output.begin(), output.end(), '<', '_');
+  std::replace(output.begin(), output.end(), '>', '_');
+  return output;
+}
+
 struct ProcessWindowsInfo {
   DWORD ProcessID;
   std::vector<HWND> Windows;
@@ -111,7 +125,8 @@ Err create_link(const Data::Account& account) {
       // Ensure that the string is Unicode.
       std::filesystem::path user_profile = getenv("USERPROFILE");
       std::string output =
-          ((user_profile / "Desktop") / (account.character + ".lnk")).string();
+          ((user_profile / "Desktop") / (safe_name(account.character) + ".lnk"))
+              .string();
       MultiByteToWideChar(CP_ACP, 0, output.c_str(), -1, wsz, MAX_PATH);
 
       // Add code here to check return value from MultiByteWideChar
