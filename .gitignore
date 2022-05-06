@@ -73,3 +73,5 @@ _deps
 !/install/x64/.dummy
 /install/x86/*
 !/install/x86/.dummy
+/hdr/version.hpp
+/install/install.iss

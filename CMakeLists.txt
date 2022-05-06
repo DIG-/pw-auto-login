@@ -18,6 +18,8 @@ find_package(cxxopts REQUIRED)
 option(DISABLE_ENCRYPT "Disable crypto" OFF)
 
 configure_file(res/app.i.rc res/app.rc)
+configure_file(hdr/version.i.hpp "${CMAKE_CURRENT_SOURCE_DIR}/hdr/version.hpp")
+configure_file(install/install.i.iss "${CMAKE_CURRENT_SOURCE_DIR}/install/install.iss")
 if (CMAKE_SIZEOF_VOID_P EQUAL "8")
   configure_file(res/app64.i.manifest res/app.manifest)
 else()
