@@ -10,6 +10,7 @@ typedef enum {
   FILE_DOES_NOT_EXISTS = 4,
   FAILED_TO_LAUNCH = 5,
   REQUIRE_ADMIN = 6,
+  FAILED_TO_SELECT_SERVER = 7,
 } Err;
 
 }
