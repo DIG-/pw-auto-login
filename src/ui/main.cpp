@@ -74,6 +74,7 @@ bool create_default_storage() {
   try {
     info.file = OS::data_dir() / "default.dat";
   } catch (Err error) {
+    show_error_message(error);
     return false;
   }
   info.key = Crypto::random(32);
