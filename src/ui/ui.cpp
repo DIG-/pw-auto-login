@@ -57,5 +57,22 @@ bool show_error_message(const std::string& message, const bool confirm) {
   return answer;
 }
 
+void show_game_launch_error(const Err& error){
+  switch (error)
+  {
+  case Err::FAILED_TO_SELECT_SERVER:
+    show_error_message("Failed to select server.\nFile accounts.txt can be protected.\n\nOr disable server feature.");
+    break;
+  
+  case Err::REQUIRE_ADMIN:
+    show_error_message("Require admin permission to select server.\nRun this program (or shortcut) as admin.\n\nOr disable server feature.");
+    break;
+  
+  default:
+    show_error_message(std::string("Failed to launche game. Code #") + std::to_string(error));
+    break;
+  }
+}
+
 }  // namespace UI
 }  // namespace DIG
