@@ -1,0 +1,44 @@
+<p:layout>
+    <IupVbox>
+        <IupHbox>
+            <IupLabel image="AAAAA"/>
+            <IupVbox>
+                <IupLabel title="PW Auto Login"/>
+                <IupHbox>
+                    <IupLabel title="Version: "/>
+                    <IupLabel p:name="about_version"/>
+                </IupHbox>
+                <IupHbox>
+                    <IupLabel title="Build Date: "/>
+                    <IupLabel p:name="about_date"/>
+                </IupHbox>
+                <IupHbox>
+                    <IupLabel title="Compiler: "/>
+                    <IupLabel p:name="about_compiler"/>
+                </IupHbox>
+                <IupHbox>
+                    <IupLabel title="License: "/>
+                    <IupLabel p:name="about_license" title="CC BY-ND 4.0"/>
+                </IupHbox>
+            </IupVbox>
+        </IupHbox>
+        <IupLabel separator="horizontal"/>
+        <IupLabel title="Libraries"/>
+        <IupHbox>
+            <IupLabel title="Mbed TLS: "/>
+            <IupLabel p:name="about_lib_mbedtls"/>
+        </IupHbox>
+        <IupHbox>
+            <IupLabel title="IUP: "/>
+            <IupLabel p:name="about_lib_iup"/>
+        </IupHbox>
+        <IupHbox>
+            <IupLabel title="cxxopts: "/>
+            <IupLabel p:name="about_lib_cxxopts"/>
+        </IupHbox>
+        <IupHbox>
+            <IupLabel title="nlohmann::json: "/>
+            <IupLabel p:name="about_lib_json"/>
+        </IupHbox>
+    </IupVbox>
+</p:layout>
