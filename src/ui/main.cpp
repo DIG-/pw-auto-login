@@ -3,7 +3,6 @@
 
 #include <iup.h>
 #include "crypto.hpp"
-#include "current/account.hpp"
 #include "current/config.hpp"
 #include "current/server.hpp"
 #include "current/store.hpp"

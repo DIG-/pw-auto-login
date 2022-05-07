@@ -36,7 +36,6 @@ target_include_directories(pw-auto-login PRIVATE ${MBEDTLS_INCLUDE_DIR})
 target_sources(pw-auto-login PRIVATE 
     res/app.rc
     src/main.cpp
-    src/current/account.cpp
     src/current/config.cpp
     src/current/server.cpp
     src/current/store.cpp
