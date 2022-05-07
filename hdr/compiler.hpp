@@ -1,4 +1,4 @@
-#ifndef COMPILER_NAME
+#pragma once
 
 #ifdef __clang__
 constexpr const char* COMPILER_NAME = __VERSION__;
@@ -25,6 +25,4 @@ constexpr const char* COMPILER_NAME = "Unknown compiler";
 constexpr const char* PLATAFORM = "32 bits";
 #else
 constexpr const char* PLATAFORM = "64 bits";
-#endif
-
 #endif
