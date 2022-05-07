@@ -1,8 +1,9 @@
 <p:layout>
     <IupVbox>
-        <IupHbox alignment="acenter">
+        <IupHbox alignment="acenter" nmargin="10x5">
             <IupLabel image="DIG_LOGO" rastersize="64x64"/>
-            <IupVbox nmargin="10x5">
+            <IupLabel rastersize="10x10"/>
+            <IupVbox>
                 <IupLabel title="PW Auto Login" fontsize="22"/>
                 <IupHbox>
                     <IupLabel title="Version: "/>
@@ -41,6 +42,7 @@
                 <IupLabel title="nlohmann::json: "/>
                 <IupLabel p:name="about_lib_json"/>
             </IupHbox>
+            <IupLabel rastersize="5x5"/>
         </IupVbox>
     </IupVbox>
 </p:layout>
