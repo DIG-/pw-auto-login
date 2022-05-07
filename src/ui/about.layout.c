@@ -36,6 +36,7 @@ Ihandle* n_0 = IupVbox(n_1, n_17, n_18, n_19, n_22, n_25, n_28, nullptr);
 
 // Attribute section
 IupSetAttribute(n_2, "IMAGE", "AAAAA");
+IupSetAttribute(n_2, "RASTERSIZE", "48x48");
 IupSetAttribute(n_17, "SEPARATOR", "horizontal");
 
 // Name section

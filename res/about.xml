@@ -1,7 +1,7 @@
 <p:layout>
     <IupVbox>
         <IupHbox>
-            <IupLabel image="AAAAA"/>
+            <IupLabel image="AAAAA" rastersize="48x48"/>
             <IupVbox>
                 <IupLabel title="PW Auto Login"/>
                 <IupHbox>
