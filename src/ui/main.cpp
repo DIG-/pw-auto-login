@@ -9,6 +9,7 @@
 #include "game.hpp"
 #include "os.hpp"
 #include "store.hpp"
+#include "ui/about.hpp"
 #include "ui/account.hpp"
 #include "ui/settings.hpp"
 
@@ -102,15 +103,21 @@ Data::Account& get_selected_account() {
 
 void create_menu() {
   auto settings = IupItem("Settings", nullptr);
+  auto about = IupItem("About", nullptr);
   // clang-format off
   auto menu = IupMenu(
     settings,
+    about,
     nullptr
   );
   // clang-format on
   IupSetHandle(MENU, menu);
   IupSetCallback(settings, "ACTION", [](Ihandle* ih) -> int {
     Settings::open_settings();
+    return 0;
+  });
+  IupSetCallback(about, "ACTION", [](Ihandle* ih) -> int {
+    About::show_about();
     return 0;
   });
 }
