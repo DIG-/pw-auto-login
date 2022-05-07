@@ -47,6 +47,8 @@ STORMBRINGER_03 ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/classes/stormbringer/03.ic
 TECHNICIAN_03 ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/classes/technician/03.ico"
 EDGERUNNER_03 ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/classes/edgerunner/03.ico"
 
+DIG_LOGO BITMAP "${CMAKE_CURRENT_SOURCE_DIR}/res/app.bmp"
+
 /****************************************************/
 /* Applications can change or remove this */
 
