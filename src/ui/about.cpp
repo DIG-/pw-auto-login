@@ -1,6 +1,10 @@
 #include "ui/about.hpp"
 
 #include <iup.h>
+#include <mbedtls/version.h>
+#include <cxxopts.hpp>
+#include <nlohmann/json.hpp>
+#include "compiler.hpp"
 #include "version.hpp"
 
 namespace DIG {
@@ -91,6 +95,22 @@ void show_about() noexcept {
 
   IupSetAttribute(about_version, "TITLE", VERSION::NAME);
   IupSetAttribute(about_date, "TITLE", build_date);
+  IupSetAttribute(about_compiler, "TITLE", COMPILER_NAME);
+
+  char mbedtls_version[16] = {0};
+  mbedtls_version_get_string(mbedtls_version);
+  const std::string cxxopt_version =
+      std::to_string(cxxopts::version.major) + std::string(".") +
+      std::to_string(cxxopts::version.minor) + std::string(".") +
+      std::to_string(cxxopts::version.patch);
+  const std::string json_version =
+      std::to_string(NLOHMANN_JSON_VERSION_MAJOR) + std::string(".") +
+      std::to_string(NLOHMANN_JSON_VERSION_MINOR) + std::string(".") +
+      std::to_string(NLOHMANN_JSON_VERSION_PATCH);
+  IupSetAttribute(about_lib_iup, "TITLE", IUP_VERSION);
+  IupSetAttribute(about_lib_mbedtls, "TITLE", mbedtls_version);
+  IupSetAttribute(about_lib_cxxopts, "TITLE", cxxopt_version.c_str());
+  IupSetAttribute(about_lib_json, "TITLE", json_version.c_str());
 
   IupPopup(dialog, IUP_CENTER, IUP_CENTER);
 }
