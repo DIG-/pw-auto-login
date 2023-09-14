@@ -1,0 +1,2 @@
+wix build -ext WixToolset.UI.wixext install.wxs -d ARCH=x64 -dcl high -out Output\pwal-setup-x64.msi
+wix build -ext WixToolset.UI.wixext install.wxs -d ARCH=x86 -dcl high -out Output\pwal-setup-x86.msi

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?ifndef ARCH ?>
+<?define ARCH = "x64" ?>
+<?endif ?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+    xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+    <Package ProductCode="{1E80501B-6C4D-4215-993B-C0641AB8C0A2}" Manufacturer="DIG" Language="1033" Name="PW Auto Login" Version="0.2.1" InstallerVersion="500" UpgradeCode="{1E80501B-6C4D-4215-993B-000000000000}" Scope="perUserOrMachine">
+        <StandardDirectory Id="ProgramFiles6432Folder">
+            <Directory Id="INSTALLDIR" Name="PW Auto Login">
+                <Component Id="Files" Guid="{1E80501B-6C4D-4215-993B-000001000000}">
+                    <File Id="iup.dll" Name="iup.dll" Source="$(var.ARCH)\iup.dll" />
+                    <File Id="libmbedcrypto.dll" Name="libmbedcrypto.dll" Source="$(var.ARCH)\libmbedcrypto.dll" />
+                    <File Id="libstdcpp_6.dll" Name="libstdc++-6.dll" Source="$(var.ARCH)\libstdc++-6.dll" />
+                    <File Id="libwinpthread_1.dll" Name="libwinpthread-1.dll" Source="$(var.ARCH)\libwinpthread-1.dll" />
+                    <File Id="pw_auto_login.exe" Name="pw-auto-login.exe" Source="$(var.ARCH)\pw-auto-login.exe" />
+
+                    <?if $(ARCH) = "x64" ?>
+                    <File Id="libgcc_s_seh_1.dll" Name="libgcc_s_seh-1.dll" Source="$(var.ARCH)\libgcc_s_seh-1.dll" />
+                    <?else ?>
+                    <File Id="libgcc_s_dw2_1.dll" Name="libgcc_s_dw2-1.dll" Source="$(var.ARCH)\libgcc_s_dw2-1.dll" />
+                    <?endif ?>
+                </Component>
+            </Directory>
+        </StandardDirectory>
+        <StandardDirectory Id="ProgramMenuFolder">
+            <Component Id="ProgramMenuShortcut" Guid="{1E80501B-6C4D-4215-993B-000002000000}">
+                <Shortcut Id="ProgramMenuPWShortcut" Name="PW Auto Login" Target="[#pw_auto_login.exe]"/>
+            </Component>
+        </StandardDirectory>
+        <StandardDirectory Id="DesktopFolder">
+            <Component Id="DesktopShortcut" Guid="{1E80501B-6C4D-4215-993B-000002000001}">
+                <Shortcut Id="DesktopPWShortcut" Name="PW Auto Login" Target="[#pw_auto_login.exe]"/>
+            </Component>
+        </StandardDirectory>
+        <StandardDirectory Id="AppDataFolder">
+            <Directory Name="DIG">
+                <Directory Name="PW-Auto-Login">
+                    <Component Id="CleanUp" Guid="{1E80501B-6C4D-4215-993B-000003000000}">
+                        <RemoveFile Name="*" On="uninstall"/>
+                        <RemoveFolder On="uninstall"/>
+                    </Component>
+                </Directory>
+            </Directory>
+        </StandardDirectory>
+        <Feature Id="Program" Title="PW Auto Login" Description="PW Auto Login" AllowAdvertise="no" AllowAbsent="no">
+            <ComponentRef Id="Files" />
+            <ComponentRef Id="ProgramMenuShortcut" />
+            <ComponentRef Id="DesktopShortcut" />
+            <ComponentRef Id="CleanUp" />
+        </Feature>
+        <Upgrade Id="{1E80501B-6C4D-4215-993B-000000000000}">
+            <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Minimum="0.0.0" Maximum="0.2.1" />
+        </Upgrade>
+        <!-- <CustomAction Id="LaunchProgram" Execute="commit" Return="ignore" FileRef="pw_auto_login.exe" ExeCommand="[#pw_auto_login.exe]" /> -->
+        <?if $(ARCH) = "x64" ?>
+        <Launch Condition="VersionNT64" Message="64-bit installer requires 64-bit operating system."/>
+        <?endif ?>
+        <Property Id="LicenseAccepted" Value="1" />
+        <Property Id="OLDERVERSIONBEINGUPGRADED" Secure="yes" />
+        <Property Id="ARPURLINFOABOUT" Value="https://github.com/DIG-/pw-auto-login/" />
+        <!-- <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch PW Auto Login"/> -->
+        <WixVariable Id="WixUILicenseRtf" Value="..\license.rtf" />
+        <Media Id="1" EmbedCab="yes" Cabinet="product.cab" />
+        <InstallExecuteSequence>
+            <RemoveExistingProducts After="InstallValidate" />
+        </InstallExecuteSequence>
+        <!--
+        <UI>
+            <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchProgram" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and Installed" />
+        </UI>
+        -->
+        <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLDIR" />
+    </Package>
+</Wix>
