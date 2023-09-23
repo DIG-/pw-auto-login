@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 
-add_repositories("dig-repo git@github.com:DIG-/cpp-xrepo.git")
+add_repositories("dig-repo https://github.com/DIG-/cpp-xrepo.git")
 
 add_requires("cxxopts ^3.0.0")
 add_requires("libiup ^3.30")
