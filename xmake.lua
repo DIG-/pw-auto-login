@@ -1,6 +1,9 @@
 add_rules("mode.debug", "mode.release")
 
+add_repositories("dig-repo git@github.com:DIG-/cpp-xrepo.git")
+
 add_requires("cxxopts ^3.0.0")
+add_requires("libiup ^3.30")
 add_requires("mbedtls ^2.16.2", {configs={shared=true}})
 add_requires("nlohmann_json ^3.10.5")
 
@@ -13,7 +16,7 @@ target("pw-auto-login")
     add_packages("cxxopts")
     add_packages("mbedtls")
     add_packages("nlohmann_json")
-    add_deps("libiup")
+    add_packages("libiup")
 
     add_syslinks("ole32")
     add_syslinks("uuid")
@@ -40,5 +43,3 @@ target("pw-auto-login")
             target:add("configfiles", "(res/app64.i.manifest)", {filename="app.manifest"})
         end
     end)
-
-includes("xmake-iup.lua")

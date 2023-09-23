@@ -1,5 +1,0 @@
-target("libiup")
-    set_kind("phony")
-    add_includedirs("../../lib/x64/iup-3.30_dllw6/include", {public=true})
-    add_linkdirs("../../lib/x64/iup-3.30_dllw6", {public=true})
-    add_links("iup", {public=true})
