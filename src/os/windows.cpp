@@ -1,5 +1,6 @@
 #include "os.hpp"
 
+#include <algorithm>
 #include <stdlib.h>
 #include <windows.h>
 #include <cstring>
