@@ -20,6 +20,7 @@ target("pw-auto-login")
 
     add_syslinks("ole32")
     add_syslinks("uuid")
+    add_syslinks("shlwapi")
     add_ldflags("-mwindows")
     
     add_includedirs("hdr")
