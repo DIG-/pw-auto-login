@@ -1,16 +1,22 @@
 #include "os.hpp"
 
-#include <algorithm>
+#include <objbase.h>
+#include <objidl.h>
+#include <propkey.h>
+#include <propvarutil.h>
+#include <shlguid.h>
+#include <shobjidl.h>
 #include <stdlib.h>
 #include <windows.h>
+
+#include <algorithm>
+#include <codecvt>
 #include <cstring>
 #include <iostream>
+
+#include "crypto.hpp"
 #include "current/config.hpp"
 #include "current/store.hpp"
-#include "objbase.h"
-#include "objidl.h"
-#include "shlguid.h"
-#include "shobjidl.h"
 
 namespace DIG {
 namespace OS {
@@ -61,9 +67,17 @@ BOOL __stdcall EnumProcessWindowsProc(HWND hwnd, LPARAM lParam) {
   return true;
 }
 
+std::wstring convert_to_widen(const std::string&& narrow) {
+  const std::size_t size = 2 * narrow.size();
+  wchar_t buffer[size];
+  MultiByteToWideChar(CP_ACP, 0, narrow.c_str(), -1, buffer, size);
+  return std::wstring(buffer);
+}
+
 Err launch(const bool require_adm,
            const std::filesystem::path& executable_,
            const std::filesystem::path& workdir_,
+           const std::filesystem::path& icon,
            const std::string& params,
            const std::string& window_title) {
   std::string executable = executable_.string();
@@ -79,15 +93,43 @@ Err launch(const bool require_adm,
   sei.nShow = SW_SHOWNORMAL;
   sei.hInstApp = nullptr;
   if (ShellExecuteExA(&sei)) {
-    if (window_title.empty()) {
+    if (window_title.empty() && icon.empty()) {
       return Err::OK;
     }
     WaitForInputIdle(sei.hProcess, INFINITE);
     ProcessWindowsInfo Info(GetProcessId(sei.hProcess));
     EnumWindows((WNDENUMPROC)EnumProcessWindowsProc,
                 reinterpret_cast<LPARAM>(&Info));
+    IPropertyStore* pps;
+
+    std::wstring window_id;
+    HICON window_icon = 0;
+    if (icon.empty()) {
+      // Nothing to do
+    } else if (icon.is_relative() && !icon.has_extension()) {
+      window_icon = LoadIcon(GetModuleHandle(nullptr), icon.string().c_str());
+      window_id = convert_to_widen("pw-auto-window-" + Crypto::random(32));
+    } else {
+      // TODO: Load icon from file
+    }
+
     for (auto& handle : Info.Windows) {
-      SetWindowTextA(handle, window_title.c_str());
+      if (!window_title.empty()) {
+        SetWindowTextA(handle, window_title.c_str());
+      }
+      if (window_icon != 0) {
+        SendMessage(handle, WM_SETICON, ICON_SMALL,
+                    reinterpret_cast<LPARAM>(window_icon));
+        SendMessage(handle, WM_SETICON, ICON_BIG,
+                    reinterpret_cast<LPARAM>(window_icon));
+        if (SUCCEEDED(
+                SHGetPropertyStoreForWindow(handle, IID_PPV_ARGS(&pps)))) {
+          PROPVARIANT prop;
+          InitPropVariantFromString(window_id.c_str(), &prop);
+          pps->SetValue(PKEY_AppUserModel_ID, prop);
+          pps->Release();
+        }
+      }
     }
     return Err::OK;
   }

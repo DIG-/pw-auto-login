@@ -3,6 +3,7 @@
 #include <codecvt>
 #include <fstream>
 #include <sstream>
+
 #include "crypto.hpp"
 #include "current/config.hpp"
 #include "os.hpp"
@@ -99,7 +100,7 @@ Err login(const Data::Account& account) {
     executable = path / "elementclient_64.exe";
   }
 
-  return OS::launch(require_adm, executable, path, command_params.str(),
+  return OS::launch(require_adm, executable, path, "", command_params.str(),
                     account.character);
 }
 
