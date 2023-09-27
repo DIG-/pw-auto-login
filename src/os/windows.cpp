@@ -140,7 +140,6 @@ Err launch(const bool require_adm,
 }
 
 Err create_link(const Data::Account& account) {
-  auto& config = Config::instance;
   auto index = AccountStore::get_index();
 
   HRESULT hres;
