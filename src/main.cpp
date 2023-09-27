@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
       info.file = result["account-store-file"].as<std::string>();
     } else if (result.count("account-store")) {
       auto index = result["account-store"].as<int>();
-      if (index < 0 || index >= DIG::Config::instance.stores.size()) {
+      if (index < 0 || static_cast<std::size_t>(index) >= DIG::Config::instance.stores.size()) {
         DIG::UI::show_error_message(
             std::string("Can not found AccountStore by index #") +
             std::to_string(index));
@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     auto account = store.accounts.begin();
     if (result.count("account") == 1) {
       auto index = result["account"].as<int>();
-      if (index < 0 || index >= store.accounts.size()) {
+      if (index < 0 || static_cast<std::size_t>(index) >= store.accounts.size()) {
         DIG::UI::show_error_message(
             std::string("Can not found account #") + std::to_string(index) +
             std::string(" in AccountStore: ") + info.file.string());
