@@ -110,7 +110,10 @@ Err launch(const bool require_adm,
       window_icon = LoadIcon(GetModuleHandle(nullptr), icon.string().c_str());
       window_id = convert_to_widen("pw-auto-window-" + Crypto::random(32));
     } else {
-      // TODO: Load icon from file
+      window_icon = reinterpret_cast<HICON>(
+          LoadImageW(nullptr, icon.c_str(), IMAGE_ICON, 0, 0,
+                     LR_DEFAULTSIZE | LR_LOADFROMFILE | LR_SHARED));
+      window_id = convert_to_widen("pw-auto-window-" + Crypto::random(32));
     }
 
     for (auto& handle : Info.Windows) {
