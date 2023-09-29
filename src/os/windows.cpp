@@ -1,5 +1,3 @@
-#include "os.hpp"
-
 #include <objbase.h>
 #include <objidl.h>
 #include <propkey.h>
@@ -17,6 +15,7 @@
 #include "crypto.hpp"
 #include "current/config.hpp"
 #include "current/store.hpp"
+#include "os.hpp"
 
 namespace DIG {
 namespace OS {
@@ -36,15 +35,20 @@ std::filesystem::path data_dir() noexcept(false) {
 
 std::string safe_name(const std::string& name) {
   std::string output = name;
-  std::replace(output.begin(), output.end(), ':', '_');
-  std::replace(output.begin(), output.end(), '\\', '_');
-  std::replace(output.begin(), output.end(), '/', '_');
-  std::replace(output.begin(), output.end(), '|', '_');
-  std::replace(output.begin(), output.end(), '?', '_');
-  std::replace(output.begin(), output.end(), '*', '_');
-  std::replace(output.begin(), output.end(), '"', '_');
-  std::replace(output.begin(), output.end(), '<', '_');
-  std::replace(output.begin(), output.end(), '>', '_');
+  for (auto& c : output) {
+    switch (c) {
+      case ':':
+      case '\\':
+      case '/':
+      case '|':
+      case '?':
+      case '*':
+      case '"':
+      case '<':
+      case '>':
+        c = '_';
+    }
+  }
   return output;
 }
 
