@@ -81,7 +81,7 @@ std::wstring convert_to_widen(const std::string&& narrow) {
 Err launch(const bool require_adm,
            const std::filesystem::path& executable_,
            const std::filesystem::path& workdir_,
-           const std::filesystem::path& icon,
+           const std::optional<std::filesystem::path>& icon,
            const std::string& params,
            const std::string& window_title) {
   std::string executable = executable_.string();
@@ -97,7 +97,7 @@ Err launch(const bool require_adm,
   sei.nShow = SW_SHOWNORMAL;
   sei.hInstApp = nullptr;
   if (ShellExecuteExA(&sei)) {
-    if (window_title.empty() && icon.empty()) {
+    if (window_title.empty() && (!icon.has_value() || icon->empty())) {
       return Err::OK;
     }
     WaitForInputIdle(sei.hProcess, INFINITE);
@@ -108,14 +108,14 @@ Err launch(const bool require_adm,
 
     std::wstring window_id;
     HICON window_icon = 0;
-    if (icon.empty()) {
+    if (!icon.has_value() || icon->empty()) {
       // Nothing to do
-    } else if (icon.is_relative() && !icon.has_extension()) {
-      window_icon = LoadIcon(GetModuleHandle(nullptr), icon.string().c_str());
+    } else if (icon->is_relative() && !icon->has_extension()) {
+      window_icon = LoadIcon(GetModuleHandle(nullptr), icon->string().c_str());
       window_id = convert_to_widen("pw-auto-window-" + Crypto::random(32));
     } else {
       window_icon = reinterpret_cast<HICON>(
-          LoadImageW(nullptr, icon.c_str(), IMAGE_ICON, 0, 0,
+          LoadImageW(nullptr, icon->c_str(), IMAGE_ICON, 0, 0,
                      LR_DEFAULTSIZE | LR_LOADFROMFILE | LR_SHARED));
       window_id = convert_to_widen("pw-auto-window-" + Crypto::random(32));
     }

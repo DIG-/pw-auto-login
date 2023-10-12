@@ -41,12 +41,10 @@ Err login(const Data::Account& account) {
     std::stringstream encoded(account.password);
     std::stringstream encrypted;
     e = Crypto::dencode(encrypted, encoded);
-    if (e != Err::OK)
-      return e;
+    if (e != Err::OK) return e;
     std::stringstream plain;
     e = Crypto::decrypt(plain, encrypted, account.key);
-    if (e != Err::OK)
-      return e;
+    if (e != Err::OK) return e;
     password = plain.str();
   }
 
@@ -100,8 +98,9 @@ Err login(const Data::Account& account) {
     executable = path / "elementclient_64.exe";
   }
 
-  return OS::launch(require_adm, executable, path, "", command_params.str(),
-                    account.character);
+  return OS::launch(require_adm, executable, path,
+                    std::optional<std::filesystem::path>(),
+                    command_params.str(), account.character);
 }
 
 }  // namespace Game
