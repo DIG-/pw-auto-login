@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE p:layout>
+<p:layout xmlns:p="https://github.com/DIG-/xml-to-iup/">
+    <IupVbox>
+        <IupFrame rastersize="300x400">
+            <IupRadio p:name="icon_choose_radio">
+                <!--
+                <IupScrollBox>
+                    <IupGridBox numdiv="3" p:name="icon_choose_grid">
+
+                    </IupGridBox>
+                </IupScrollBox>
+                -->
+            </IupRadio>
+        </IupFrame>
+        <IupHbox>
+            <IupLabel expand="horizontal" />
+            <IupButton p:name="icon_choose_save" title="&amp;Save" rastersize="60x0" />
+            <IupLabel rastersize="10x0" />
+            <IupButton p:name="icon_choose_cancel" title="&amp;Cancel" rastersize="60x0" />
+        </IupHbox>
+    </IupVbox>
+</p:layout>
