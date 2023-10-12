@@ -1,4 +1,5 @@
 #include "data/account.hpp"
+
 #include "data/serialize.hpp"
 
 namespace DIG {
@@ -17,6 +18,9 @@ void to_json(nlohmann::json& json, const Account& account) {
   if (account.server.has_value()) {
     json["s"] = account.server.value();
   }
+  if (account.icon.has_value() && !account.icon->empty()) {
+    json["i"] = account.icon.value();
+  }
 }
 
 template <>
@@ -33,6 +37,10 @@ void from_json(const nlohmann::json& json, Account& account) {
   if (json.contains("s")) {
     account.server.emplace(Server{});
     json.at("s").get_to(account.server.value());
+  }
+  if (json.contains("i")) {
+    account.icon.emplace("");
+    json.at("i").get_to(account.icon.value());
   }
 }
 

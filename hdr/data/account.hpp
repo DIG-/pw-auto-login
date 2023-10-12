@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <optional>
 
 #include "data/serializable.hpp"
@@ -16,6 +17,7 @@ typedef struct Account : Serializable {
   std::string command_line;
   std::optional<bool> use64;
   std::optional<Server> server;
+  std::optional<std::filesystem::path> icon;
 } Account;
 
 }  // namespace Data
