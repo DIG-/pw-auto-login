@@ -4,18 +4,17 @@
     <IupVbox>
         <IupFrame rastersize="300x400">
             <IupRadio p:name="icon_choose_radio">
-                <!--
                 <IupScrollBox>
-                    <IupGridBox numdiv="3" p:name="icon_choose_grid">
-
+                    <IupGridBox p:name="icon_choose_grid" numdiv="3">
+                        <IupToggle p:name="icon_choose_none" title="None" />
+                        <IupToggle p:name="icon_choose_custom" title="Custom" />
                     </IupGridBox>
                 </IupScrollBox>
-                -->
             </IupRadio>
         </IupFrame>
         <IupHbox>
             <IupLabel expand="horizontal" />
-            <IupButton p:name="icon_choose_save" title="&amp;Save" rastersize="60x0" />
+            <IupButton p:name="icon_choose_select" title="&amp;Select" rastersize="60x0" />
             <IupLabel rastersize="10x0" />
             <IupButton p:name="icon_choose_cancel" title="&amp;Cancel" rastersize="60x0" />
         </IupHbox>
