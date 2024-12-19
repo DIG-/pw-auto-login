@@ -1,10 +1,14 @@
 #include "os.hpp"
 
-#include <algorithm>
 #include <stdlib.h>
 #include <windows.h>
+
+#include <algorithm>
+#include <chrono>
 #include <cstring>
 #include <iostream>
+#include <thread>
+
 #include "current/config.hpp"
 #include "current/store.hpp"
 #include "objbase.h"
@@ -82,10 +86,20 @@ Err launch(const bool require_adm,
     if (window_title.empty()) {
       return Err::OK;
     }
+    auto start = std::chrono::system_clock::now();
     WaitForInputIdle(sei.hProcess, INFINITE);
     ProcessWindowsInfo Info(GetProcessId(sei.hProcess));
-    EnumWindows((WNDENUMPROC)EnumProcessWindowsProc,
-                reinterpret_cast<LPARAM>(&Info));
+    if(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - start).count() < 2) {
+      std::this_thread::sleep_for(std::chrono::seconds(5));
+    }
+    while (Info.Windows.empty()) {
+      EnumWindows((WNDENUMPROC)EnumProcessWindowsProc,
+                  reinterpret_cast<LPARAM>(&Info));
+      if (Info.Windows.empty()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      }
+    }
+
     for (auto& handle : Info.Windows) {
       SetWindowTextA(handle, window_title.c_str());
     }

@@ -3,6 +3,7 @@
 #include <istream>
 #include <ostream>
 #include <string>
+#include <cstdint>
 
 #include "error.hpp"
 
