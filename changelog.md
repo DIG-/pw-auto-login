@@ -1,5 +1,9 @@
 Changelog
 =========
+0.2.2
+-----
+- Fix: Window rename after game launch
+
 0.2.1
 -----
 - Fix: App close on first run after select game file

@@ -4,7 +4,7 @@
 <?endif ?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package ProductCode="{1E80501B-6C4D-4215-993B-C0641AB8C0A2}" Manufacturer="DIG" Language="1033" Name="PW Auto Login" Version="0.2.1" InstallerVersion="500" UpgradeCode="{1E80501B-6C4D-4215-993B-000000000000}" Scope="perUserOrMachine">
+    <Package ProductCode="{1E80501B-6C4D-4215-993B-C0641AB8C0A2}" Manufacturer="DIG" Language="1033" Name="PW Auto Login" Version="0.2.2" InstallerVersion="500" UpgradeCode="{1E80501B-6C4D-4215-993B-000000000000}" Scope="perUserOrMachine">
         <StandardDirectory Id="ProgramFiles6432Folder">
             <Directory Id="INSTALLDIR" Name="PW Auto Login">
                 <Component Id="Files" Guid="{1E80501B-6C4D-4215-993B-000001000000}">
