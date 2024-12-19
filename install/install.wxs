@@ -49,7 +49,8 @@
             <ComponentRef Id="CleanUp" />
         </Feature>
         <Upgrade Id="{1E80501B-6C4D-4215-993B-000000000000}">
-            <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Minimum="0.0.0" Maximum="0.2.1" />
+            <UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="0.2.3" OnlyDetect="yes" />
+            <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Maximum="0.2.3" IncludeMaximum="no" />
         </Upgrade>
         <!-- <CustomAction Id="LaunchProgram" Execute="commit" Return="ignore" FileRef="pw_auto_login.exe" ExeCommand="[#pw_auto_login.exe]" /> -->
         <?if $(ARCH) = "x64" ?>
