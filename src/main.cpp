@@ -18,10 +18,10 @@ int main(int argc, char** argv) {
   // clang-format off
   options.add_options()
   //        ("config-file","Config file (optional)",cxxopts::value<std::string>(),"FILE")
-          ("s,account-store","Index of account-store in config file",cxxopts::value<int>(),"INDEX")
+          ("s,account-store","Index of account-store in config file",cxxopts::value<uint16_t>(),"INDEX")
           ("account-store-file","Account-store file to be used",cxxopts::value<std::string>(),"FILE")
           ("account-store-password","Account-store password",cxxopts::value<std::string>(),"PASSWORD")
-          ("a,account","Index of account inside account-store to be logged",cxxopts::value<int>(),"INDEX")
+          ("a,account","Index of account inside account-store to be logged",cxxopts::value<uint16_t>(),"INDEX")
           ("c,character","Character with account inside account-store to be logged",cxxopts::value<std::string>(),"NAME")
           ;
   // clang-format on
@@ -36,8 +36,8 @@ int main(int argc, char** argv) {
     if (result.count("account-store-file")) {
       info.file = result["account-store-file"].as<std::string>();
     } else if (result.count("account-store")) {
-      auto index = result["account-store"].as<int>();
-      if (index < 0 || index >= DIG::Config::instance.stores.size()) {
+      auto index = result["account-store"].as<uint16_t>();
+      if (index >= DIG::Config::instance.stores.size()) {
         DIG::UI::show_error_message(
             std::string("Can not found AccountStore by index #") +
             std::to_string(index));
@@ -67,8 +67,8 @@ int main(int argc, char** argv) {
     DIG::Data::AccountStore store = DIG::AccountStore::read(info);
     auto account = store.accounts.begin();
     if (result.count("account") == 1) {
-      auto index = result["account"].as<int>();
-      if (index < 0 || index >= store.accounts.size()) {
+      auto index = result["account"].as<uint16_t>();
+      if (index >= store.accounts.size()) {
         DIG::UI::show_error_message(
             std::string("Can not found account #") + std::to_string(index) +
             std::string(" in AccountStore: ") + info.file.string());

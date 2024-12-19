@@ -71,7 +71,7 @@ void apply(Data::Account& account) {
       account.server.reset();
     } else if (Server::list.size() > 0) {
       auto index = std::stoi(server) - 1;
-      if (index < 0 || index >= Server::list.size()) {
+      if (index < 0 || static_cast<unsigned>(index) >= Server::list.size()) {
         account.server.reset();
       } else {
         account.server.emplace(Server::list[index]);

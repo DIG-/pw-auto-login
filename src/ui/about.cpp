@@ -82,7 +82,7 @@ void show_about() noexcept {
   auto about_version = IupGetHandle("about_version");
   auto about_date = IupGetHandle("about_date");
   auto about_compiler = IupGetHandle("about_compiler");
-  auto about_license = IupGetHandle("about_license");
+  //auto about_license = IupGetHandle("about_license");
   auto about_lib_mbedtls = IupGetHandle("about_lib_mbedtls");
   auto about_lib_iup = IupGetHandle("about_lib_iup");
   auto about_lib_cxxopts = IupGetHandle("about_lib_cxxopts");
