@@ -1,5 +1,10 @@
 Changelog
 =========
+0.2.3
+-----
+- Optimized window detection to rename
+- Fix: Build date
+
 0.2.2
 -----
 - Fix: Window rename after game launch

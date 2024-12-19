@@ -9,7 +9,7 @@ add_requires("nlohmann_json ^3.10.5")
 
 target("pw-auto-login")
     set_kind("binary")
-    set_version("0.2.2")
+    set_version("0.2.3")
     set_warnings("all")
     set_languages("cxx17")
 
