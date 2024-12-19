@@ -69,11 +69,12 @@ constexpr char build_date[] = {_zis(_build_date[7]),
                                _zis(_build_date[9]),
                                _zis(_build_date[10]),
                                '-',
+                               _build_month[0],
+                               _build_month[1],
+                               '-',
                                _zis(_build_date[4]),
                                _build_date[5],
-                               '-',
-                               _build_month[0],
-                               _build_month[1]};
+                               '\0'};
 
 #include "about.layout.c"
 
