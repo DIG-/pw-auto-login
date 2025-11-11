@@ -103,7 +103,7 @@ Err launch(const bool require_adm,
         memset(buffer, 0, sizeof(buffer));
         GetWindowTextA(*it, buffer, sizeof(buffer) - 1);
         std::string_view title(buffer);
-        if (title.empty() || title == "Default IME") {
+        if (title.empty() || title == "Default IME" || title == "MSCTFIME UI") {
           it = Info.Windows.erase(it);
         } else {
           ++it;
