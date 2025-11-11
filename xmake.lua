@@ -23,7 +23,7 @@ target("pw-auto-login")
     add_ldflags("-mwindows")
     
     add_includedirs("hdr")
-    add_includedirs("$(buildir)/hdr")
+    add_includedirs("$(builddir)/hdr")
 
     set_configvar("PROJECT_ROOT", "$(projectdir)")
     add_configfiles("(hdr/version.i.hpp)", {filename="version.hpp"})
@@ -34,7 +34,7 @@ target("pw-auto-login")
     add_files("src/data/*.cpp")
     add_files("src/os/*.cpp")
     add_files("src/ui/*.cpp")
-    add_files("$(buildir)/res/app.rc")
+    add_files("$(builddir)/res/app.rc")
 
     on_load(function (target)
         if target:is_arch("x86") then 
