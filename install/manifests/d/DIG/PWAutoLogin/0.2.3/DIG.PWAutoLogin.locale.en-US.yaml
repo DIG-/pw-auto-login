@@ -1,5 +1,5 @@
-# Created using wingetcreate 1.5.2.0
-# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.5.0.schema.json
+# Created using wingetcreate 1.9.2.0
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.9.0.schema.json
 
 PackageIdentifier: DIG.PWAutoLogin
 PackageVersion: 0.2.3
@@ -11,10 +11,10 @@ Author: Gustavo de Oliveira Silva (DIG)
 PackageName: PW Auto Login
 PackageUrl: https://github.com/DIG-/pw-auto-login
 License: CC BY-ND 4.0
-LicenseUrl: https://github.com/DIG-/pw-auto-login/blob/0.2.3/license.txt
-Copyright: DIG
-ShortDescription: PW Auto Login Setup
+LicenseUrl: https://github.com/DIG-/pw-auto-login?tab=License-1-ov-file
+ShortDescription: Perfect World credential manager with game auto login feature
+Description: Cryptographically stores username, password and character name to launch the game Perfect World already logged in.
 Moniker: pw-auto-login
-ReleaseNotes: First winget version
+ReleaseNotes: Update window detection and fix some bugs
 ManifestType: defaultLocale
-ManifestVersion: 1.5.0
+ManifestVersion: 1.9.0
