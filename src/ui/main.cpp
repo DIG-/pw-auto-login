@@ -1,7 +1,7 @@
 #include "ui/main.hpp"
-#include "ui.hpp"
 
 #include <iup.h>
+
 #include "crypto.hpp"
 #include "current/config.hpp"
 #include "current/server.hpp"
@@ -9,6 +9,7 @@
 #include "game.hpp"
 #include "os.hpp"
 #include "store.hpp"
+#include "ui.hpp"
 #include "ui/about.hpp"
 #include "ui/account.hpp"
 #include "ui/settings.hpp"
@@ -28,6 +29,10 @@ Ihandle* account_edit;
 Ihandle* account_rem;
 Ihandle* account_link;
 Ihandle* account_launch;
+Ihandle* account_move_top;
+Ihandle* account_move_up;
+Ihandle* account_move_down;
+Ihandle* account_move_bottom;
 
 bool configure_game_executable() {
   show_error_message("Game executable not defined.");
@@ -131,6 +136,10 @@ void create() {
   account_rem = IupGetHandle("account_rem");
   account_link = IupGetHandle("account_link");
   account_launch = IupGetHandle("account_launch");
+  account_move_top = IupGetHandle("account_move_top");
+  account_move_up = IupGetHandle("account_move_above");
+  account_move_down = IupGetHandle("account_move_bellow");
+  account_move_bottom = IupGetHandle("account_move_bottom");
 
   IupSetAttribute(dialog, "TITLE", "PW Auto Login");
   IupSetAttribute(dialog, "RESIZE", "NO");
@@ -142,10 +151,10 @@ void create() {
   IupSetAttribute(account_link, "ACTIVE", "NO");
   IupSetAttribute(account_launch, "ACTIVE", "NO");
 
-  IupSetAttribute(IupGetHandle("account_move_top"), "ACTIVE", "NO");
-  IupSetAttribute(IupGetHandle("account_move_above"), "ACTIVE", "NO");
-  IupSetAttribute(IupGetHandle("account_move_bellow"), "ACTIVE", "NO");
-  IupSetAttribute(IupGetHandle("account_move_bottom"), "ACTIVE", "NO");
+  IupSetAttribute(account_move_top, "ACTIVE", "NO");
+  IupSetAttribute(account_move_up, "ACTIVE", "NO");
+  IupSetAttribute(account_move_down, "ACTIVE", "NO");
+  IupSetAttribute(account_move_bottom, "ACTIVE", "NO");
 
   IupSetCallback(account_list, "VALUECHANGED_CB", [](Ihandle* ih) -> int {
     update_selection();
@@ -167,6 +176,42 @@ void create() {
   IupSetCallback(account_rem, "ACTION", [](Ihandle* ih) -> int {
     if (Account::rem_account(get_selection())) {
       update_account_store();
+    }
+    return 0;
+  });
+  IupSetCallback(account_move_top, "ACTION", [](Ihandle* ih) -> int {
+    auto result =
+        Account::move_account(get_selection(), false, false, true, false);
+    if (result) {
+      update_account_store();
+      select_account(result.value());
+    }
+    return 0;
+  });
+  IupSetCallback(account_move_up, "ACTION", [](Ihandle* ih) -> int {
+    auto result =
+        Account::move_account(get_selection(), true, false, false, false);
+    if (result) {
+      update_account_store();
+      select_account(result.value());
+    }
+    return 0;
+  });
+  IupSetCallback(account_move_down, "ACTION", [](Ihandle* ih) -> int {
+    auto result =
+        Account::move_account(get_selection(), false, true, false, false);
+    if (result) {
+      update_account_store();
+      select_account(result.value());
+    }
+    return 0;
+  });
+  IupSetCallback(account_move_bottom, "ACTION", [](Ihandle* ih) -> int {
+    auto result =
+        Account::move_account(get_selection(), false, false, false, true);
+    if (result) {
+      update_account_store();
+      select_account(result.value());
     }
     return 0;
   });
@@ -205,12 +250,23 @@ void update_selection() {
     IupSetAttribute(account_rem, "ACTIVE", "NO");
     IupSetAttribute(account_link, "ACTIVE", "NO");
     IupSetAttribute(account_launch, "ACTIVE", "NO");
+    IupSetAttribute(account_move_top, "ACTIVE", "NO");
+    IupSetAttribute(account_move_up, "ACTIVE", "NO");
+    IupSetAttribute(account_move_down, "ACTIVE", "NO");
+    IupSetAttribute(account_move_bottom, "ACTIVE", "NO");
     return;
   }
+  const bool is_first = index <= 0;
+  const bool is_last = index >= 0 && static_cast<uint_fast16_t>(index + 1) >=
+                                         AccountStore::instance.accounts.size();
   IupSetAttribute(account_edit, "ACTIVE", "YES");
   IupSetAttribute(account_rem, "ACTIVE", "YES");
   IupSetAttribute(account_link, "ACTIVE", "YES");
   IupSetAttribute(account_launch, "ACTIVE", "YES");
+  IupSetAttribute(account_move_top, "ACTIVE", is_first ? "NO" : "YES");
+  IupSetAttribute(account_move_up, "ACTIVE", is_first ? "NO" : "YES");
+  IupSetAttribute(account_move_down, "ACTIVE", is_last ? "NO" : "YES");
+  IupSetAttribute(account_move_bottom, "ACTIVE", is_last ? "NO" : "YES");
 }
 
 void update_account_store() {
