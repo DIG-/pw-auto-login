@@ -200,6 +200,7 @@ std::optional<uint_fast16_t> move_account(const uint_fast16_t& index,
       if (index > 0) {
         std::swap(AccountStore::instance.accounts[index - 1],
                   AccountStore::instance.accounts[index]);
+        AccountStore::save();
         return index - 1;
       }
       return std::nullopt;
@@ -208,6 +209,7 @@ std::optional<uint_fast16_t> move_account(const uint_fast16_t& index,
       if (index < AccountStore::instance.accounts.size() - 1) {
         std::swap(AccountStore::instance.accounts[index + 1],
                   AccountStore::instance.accounts[index]);
+        AccountStore::save();
         return index + 1;
       }
       return std::nullopt;
@@ -217,6 +219,7 @@ std::optional<uint_fast16_t> move_account(const uint_fast16_t& index,
         std::rotate(AccountStore::instance.accounts.begin(),
                     AccountStore::instance.accounts.begin() + index,
                     AccountStore::instance.accounts.begin() + index + 1);
+        AccountStore::save();
         return 0;
       }
       return std::nullopt;
@@ -226,6 +229,7 @@ std::optional<uint_fast16_t> move_account(const uint_fast16_t& index,
         std::rotate(AccountStore::instance.accounts.begin() + index,
                     AccountStore::instance.accounts.begin() + index + 1,
                     AccountStore::instance.accounts.end());
+        AccountStore::save();
         return AccountStore::instance.accounts.size() - 1;
       }
       return std::nullopt;
