@@ -193,50 +193,42 @@ bool rem_account(const uint_fast16_t& index) {
   return false;
 }
 
-std::optional<uint_fast16_t> move_account(const uint_fast16_t& index, bool up,
-                                          bool down, bool top, bool bottom) {
-  if ((up && (down || top || bottom)) || (down && (top || bottom)) ||
-      (top && bottom)) {
-    // Logic error
-    return std::nullopt;
-  }
+std::optional<uint_fast16_t> move_account(const uint_fast16_t& index,
+                                          const MoveDirection direction) {
+  switch (direction) {
+    case MoveDirection::UP:
+      if (index > 0) {
+        std::swap(AccountStore::instance.accounts[index - 1],
+                  AccountStore::instance.accounts[index]);
+        return index - 1;
+      }
+      return std::nullopt;
 
-  if (up) {
-    if (index > 0) {
-      std::swap(AccountStore::instance.accounts[index - 1],
-                AccountStore::instance.accounts[index]);
-      return index - 1;
-    }
-    return std::nullopt;
-  }
+    case MoveDirection::DOWN:
+      if (index < AccountStore::instance.accounts.size() - 1) {
+        std::swap(AccountStore::instance.accounts[index + 1],
+                  AccountStore::instance.accounts[index]);
+        return index + 1;
+      }
+      return std::nullopt;
 
-  if (down) {
-    if (index < AccountStore::instance.accounts.size() - 1) {
-      std::swap(AccountStore::instance.accounts[index + 1],
-                AccountStore::instance.accounts[index]);
-      return index + 1;
-    }
-    return std::nullopt;
-  }
+    case MoveDirection::TOP:
+      if (index > 0) {
+        std::rotate(AccountStore::instance.accounts.begin(),
+                    AccountStore::instance.accounts.begin() + index,
+                    AccountStore::instance.accounts.begin() + index + 1);
+        return 0;
+      }
+      return std::nullopt;
 
-  if (top) {
-    if (index > 0) {
-      std::rotate(AccountStore::instance.accounts.begin(),
-                  AccountStore::instance.accounts.begin() + index,
-                  AccountStore::instance.accounts.begin() + index + 1);
-      return 0;
-    }
-    return std::nullopt;
-  }
-
-  if (bottom) {
-    if (index < AccountStore::instance.accounts.size() - 1) {
-      std::rotate(AccountStore::instance.accounts.begin() + index,
-                  AccountStore::instance.accounts.begin() + index + 1,
-                  AccountStore::instance.accounts.end());
-      return AccountStore::instance.accounts.size() - 1;
-    }
-    return std::nullopt;
+    case MoveDirection::BOTTOM:
+      if (index < AccountStore::instance.accounts.size() - 1) {
+        std::rotate(AccountStore::instance.accounts.begin() + index,
+                    AccountStore::instance.accounts.begin() + index + 1,
+                    AccountStore::instance.accounts.end());
+        return AccountStore::instance.accounts.size() - 1;
+      }
+      return std::nullopt;
   }
 
   return std::nullopt;

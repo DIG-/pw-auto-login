@@ -181,7 +181,7 @@ void create() {
   });
   IupSetCallback(account_move_top, "ACTION", [](Ihandle* ih) -> int {
     auto result =
-        Account::move_account(get_selection(), false, false, true, false);
+        Account::move_account(get_selection(), Account::MoveDirection::TOP);
     if (result) {
       update_account_store();
       select_account(result.value());
@@ -190,7 +190,7 @@ void create() {
   });
   IupSetCallback(account_move_up, "ACTION", [](Ihandle* ih) -> int {
     auto result =
-        Account::move_account(get_selection(), true, false, false, false);
+        Account::move_account(get_selection(), Account::MoveDirection::UP);
     if (result) {
       update_account_store();
       select_account(result.value());
@@ -199,7 +199,7 @@ void create() {
   });
   IupSetCallback(account_move_down, "ACTION", [](Ihandle* ih) -> int {
     auto result =
-        Account::move_account(get_selection(), false, true, false, false);
+        Account::move_account(get_selection(), Account::MoveDirection::DOWN);
     if (result) {
       update_account_store();
       select_account(result.value());
@@ -208,7 +208,7 @@ void create() {
   });
   IupSetCallback(account_move_bottom, "ACTION", [](Ihandle* ih) -> int {
     auto result =
-        Account::move_account(get_selection(), false, false, false, true);
+        Account::move_account(get_selection(), Account::MoveDirection::BOTTOM);
     if (result) {
       update_account_store();
       select_account(result.value());
