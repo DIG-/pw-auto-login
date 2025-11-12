@@ -1,5 +1,10 @@
 Changelog
 =========
+0.2.4
+-----
+- Added icons for new classes
+- Implemented account order change
+
 0.2.3
 -----
 - Optimized window detection to rename
