@@ -1,3 +1,4 @@
+#include <cxxopts.hpp>
 #include <iostream>
 
 #include "crypto.hpp"
@@ -10,14 +11,12 @@
 #include "store.hpp"
 #include "ui.hpp"
 
-#include <cxxopts.hpp>
-
 int main(int argc, char** argv) {
   cxxopts::Options options("PW-Auto-Login",
                            "Simple creative Perfect World launcher");
   // clang-format off
   options.add_options()
-  //        ("config-file","Config file (optional)",cxxopts::value<std::string>(),"FILE")
+          ("config-file","Config file (optional)",cxxopts::value<std::string>(),"FILE")
           ("s,account-store","Index of account-store in config file",cxxopts::value<uint16_t>(),"INDEX")
           ("account-store-file","Account-store file to be used",cxxopts::value<std::string>(),"FILE")
           ("account-store-password","Account-store password",cxxopts::value<std::string>(),"PASSWORD")
@@ -27,12 +26,22 @@ int main(int argc, char** argv) {
   // clang-format on
 
   auto result = options.parse(argc, argv);
+  if (result.count("config-file")) {
+    auto err = DIG::Config::init(result["config-file"].as<std::string>());
+    if (err != DIG::Err::OK) {
+      DIG::UI::show_error_message(
+          std::string("Failed to initialize config file. Code #") +
+          std::to_string(static_cast<int>(err)));
+      return 1;
+    }
+  } else {
+    DIG::Config::init();
+  }
   if (result.count("account") + result.count("character") > 1) {
     DIG::UI::show_error_message("Only one account per shortcut");
     return 1;
   } else if (result.count("account") + result.count("character") == 1) {
     DIG::Data::AccountStoreInfo info;
-    DIG::Config::init();
     if (result.count("account-store-file")) {
       info.file = result["account-store-file"].as<std::string>();
     } else if (result.count("account-store")) {

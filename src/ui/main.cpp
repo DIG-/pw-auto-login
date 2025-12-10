@@ -288,7 +288,6 @@ void select_account(const uint_fast16_t& index) {
 }  // namespace Main
 
 void run_main() {
-  Config::init();
   if (Config::instance.game.empty()) {
     if (!Main::configure_game_executable()) {
       return;
