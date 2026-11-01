@@ -30,6 +30,7 @@ Ihandle* account_cmd = nullptr;
 
 constexpr auto ACCOUNT_POINTER = "DIG::UI::Account::Dialog::Pointer";
 constexpr auto SAVE_BOOLEAN = "DIG::UI::Account::Dialog::Save";
+constexpr char DISABLED_SERVER_OPTION[] = "[None]";
 
 void apply(Data::Account& account) {
   account.username = IupGetAttribute(account_username, "VALUE");
@@ -63,21 +64,19 @@ void apply(Data::Account& account) {
   }
 
   // Update Server
-  if (Config::instance.allow_server) {
-    auto server_select = IupGetAttribute(account_server, "VALUE");
-    std::string server = "0";
-    if (server_select != nullptr) {
-      server = server_select;
-    }
-    if (server.empty()) {
+  auto server_select = IupGetAttribute(account_server, "VALUE");
+  std::string server = "0";
+  if (server_select != nullptr) {
+    server = server_select;
+  }
+  if (server.empty()) {
+    account.server.reset();
+  } else if (Server::list.size() > 0) {
+    auto index = std::stoi(server) - 1;
+    if (index < 0 || static_cast<unsigned>(index) >= Server::list.size()) {
       account.server.reset();
-    } else if (Server::list.size() > 0) {
-      auto index = std::stoi(server) - 1;
-      if (index < 0 || static_cast<unsigned>(index) >= Server::list.size()) {
-        account.server.reset();
-      } else {
-        account.server.emplace(Server::list[index]);
-      }
+    } else {
+      account.server.emplace(Server::list[index]);
     }
   }
 }
@@ -97,12 +96,10 @@ void fill(Data::Account& account) {
   if (account.server.has_value()) {
     IupSetAttribute(account_server, "VALUESTRING",
                     account.server.value().name.c_str());
-  }
-  if (Config::instance.allow_server) {
-    IupSetAttribute(account_server, "ACTIVE", "YES");
   } else {
-    IupSetAttribute(account_server, "ACTIVE", "NO");
+    IupSetAttribute(account_server, "VALUESTRING", DISABLED_SERVER_OPTION);
   }
+  IupSetAttribute(account_server, "ACTIVE", "YES");
 }
 
 bool show_dialog(Data::Account& account, bool edit) {
@@ -142,6 +139,7 @@ bool show_dialog(Data::Account& account, bool edit) {
       IupSetAttribute(account_server, std::to_string(++count).c_str(),
                       server.name.c_str());
     }
+    IupSetAttribute(account_server, std::to_string(++count).c_str(), DISABLED_SERVER_OPTION);
     IupSetAttribute(account_server, std::to_string(++count).c_str(), nullptr);
   }
 

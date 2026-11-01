@@ -18,14 +18,12 @@ void open_settings() {
   char game[1024];
   char cmd[2048];
   int use64 = config.use64 ? 0 : 1;
-  int allow_server = config.allow_server ? 0 : 1;
   strcpy(game, game_.c_str());
   strcpy(cmd, config.command_line.c_str());
 
   if (!IupGetParam("Settings", nullptr, nullptr,
-                   "Game: %f[OPEN|*.exe]\n64 bits: %o|Yes|No|\nAllow Server*: "
-                   "%o|Yes|No|\nCommand Line: %m\n",
-                   game, &use64, &allow_server, cmd)) {
+                   "Game: %f[OPEN|*.exe]\n64 bits: %o|Yes|No|\nCommand Line: %m\n",
+                   game, &use64, cmd)) {
     return;
   }
 
@@ -54,7 +52,6 @@ void open_settings() {
   std::replace(config.command_line.begin(), config.command_line.end(), '\n',
                ' ');
   config.use64 = use64 == 0;
-  config.allow_server = allow_server == 0;
   Config::save();
 }
 
