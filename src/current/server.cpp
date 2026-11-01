@@ -47,14 +47,14 @@ Err read() {
     return Err::CAN_NOT_OPEN_FILE;
   }
   file.seekg(0, std::fstream::end);
-  size_t size = (size_t)file.tellg();
+  size_t size = static_cast<size_t>(file.tellg());
 
   // skip BOM
   file.seekg(2, std::fstream::beg);
   size -= 2;
 
   std::wstring u16((size / 2) + 1, '\0');
-  file.read((char*)&u16[0], size);
+  file.read(reinterpret_cast<char*>(u16.data()), size);
 
   std::string utf8 = OS::narrow(u16);
   std::stringstream converted(utf8);

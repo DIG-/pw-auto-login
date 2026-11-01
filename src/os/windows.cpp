@@ -97,7 +97,7 @@ Err launch(const bool require_adm,
                std::chrono::system_clock::now() - start)
                    .count() < 1) {
       Info.Windows.clear();
-      EnumWindows((WNDENUMPROC)EnumProcessWindowsProc,
+      EnumWindows(static_cast<WNDENUMPROC>(EnumProcessWindowsProc),
                   reinterpret_cast<LPARAM>(&Info));
       for (auto it = Info.Windows.begin(); it != Info.Windows.end();) {
         memset(buffer, 0, sizeof(buffer));
@@ -135,7 +135,7 @@ Err create_link(const Data::Account& account) {
   IShellLink* psl;
   CoInitialize(nullptr);
   hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
-                          IID_IShellLink, (LPVOID*)&psl);
+                          IID_IShellLink, reinterpret_cast<LPVOID*>(&psl));
   if (SUCCEEDED(hres)) {
     IPersistFile* ppf;
 
@@ -151,7 +151,7 @@ Err create_link(const Data::Account& account) {
 
     // Query IShellLink for the IPersistFile interface, used for saving the
     // shortcut in persistent storage.
-    hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
+    hres = psl->QueryInterface(IID_IPersistFile, reinterpret_cast<LPVOID*>(&ppf));
 
     if (SUCCEEDED(hres)) {
       WCHAR wsz[MAX_PATH];

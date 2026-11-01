@@ -16,7 +16,8 @@ bool initialize() {
   }
   int argc = 1;
   char** argv = new char*[1];
-  argv[0] = (char*)"";
+  const char* empty = "";
+  argv[0] = const_cast<char*>(empty);
   IupOpen(&argc, &argv);
   delete argv;
   initialized = true;
