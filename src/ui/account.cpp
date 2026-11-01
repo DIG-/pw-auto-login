@@ -119,11 +119,11 @@ bool show_dialog(Data::Account& account, bool edit) {
   IupSetAttribute(dialog, SAVE_BOOLEAN, (char*)&save);
   IupSetAttribute(dialog, ACCOUNT_POINTER, (char*)&account);
 
-  IupSetCallback(account_cancel, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_cancel, "ACTION", [](Ihandle*) -> int {
     IupDestroy(dialog);
     return 0;
   });
-  IupSetCallback(account_save, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_save, "ACTION", [](Ihandle*) -> int {
     apply(*((Data::Account*)IupGetAttribute(dialog, ACCOUNT_POINTER)));
     *((bool*)IupGetAttribute(dialog, SAVE_BOOLEAN)) = true;
     IupDestroy(dialog);

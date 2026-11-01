@@ -66,7 +66,7 @@ Err read() {
     if (content.size() != 3) {
       continue;
     }
-    list.push_back({name : content[0], address : content[1]});
+    list.push_back(Data::Server{content[0], content[1]});
   }
   return Err::OK;
 }

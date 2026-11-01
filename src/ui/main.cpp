@@ -117,11 +117,11 @@ void create_menu() {
   );
   // clang-format on
   IupSetHandle(MENU, menu);
-  IupSetCallback(settings, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(settings, "ACTION", [](Ihandle*) -> int {
     Settings::open_settings();
     return 0;
   });
-  IupSetCallback(about, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(about, "ACTION", [](Ihandle*) -> int {
     About::show_about();
     return 0;
   });
@@ -156,30 +156,30 @@ void create() {
   IupSetAttribute(account_move_down, "ACTIVE", "NO");
   IupSetAttribute(account_move_bottom, "ACTIVE", "NO");
 
-  IupSetCallback(account_list, "VALUECHANGED_CB", [](Ihandle* ih) -> int {
+  IupSetCallback(account_list, "VALUECHANGED_CB", [](Ihandle*) -> int {
     update_selection();
     return 0;
   });
-  IupSetCallback(account_add, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_add, "ACTION", [](Ihandle*) -> int {
     if (Account::add_account()) {
       update_account_store();
       select_account(AccountStore::instance.accounts.size() - 1);
     }
     return 0;
   });
-  IupSetCallback(account_edit, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_edit, "ACTION", [](Ihandle*) -> int {
     if (Account::edit_account(get_selection())) {
       update_account_store();
     }
     return 0;
   });
-  IupSetCallback(account_rem, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_rem, "ACTION", [](Ihandle*) -> int {
     if (Account::rem_account(get_selection())) {
       update_account_store();
     }
     return 0;
   });
-  IupSetCallback(account_move_top, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_move_top, "ACTION", [](Ihandle*) -> int {
     auto result =
         Account::move_account(get_selection(), Account::MoveDirection::TOP);
     if (result) {
@@ -188,7 +188,7 @@ void create() {
     }
     return 0;
   });
-  IupSetCallback(account_move_up, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_move_up, "ACTION", [](Ihandle*) -> int {
     auto result =
         Account::move_account(get_selection(), Account::MoveDirection::UP);
     if (result) {
@@ -197,7 +197,7 @@ void create() {
     }
     return 0;
   });
-  IupSetCallback(account_move_down, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_move_down, "ACTION", [](Ihandle*) -> int {
     auto result =
         Account::move_account(get_selection(), Account::MoveDirection::DOWN);
     if (result) {
@@ -206,7 +206,7 @@ void create() {
     }
     return 0;
   });
-  IupSetCallback(account_move_bottom, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_move_bottom, "ACTION", [](Ihandle*) -> int {
     auto result =
         Account::move_account(get_selection(), Account::MoveDirection::BOTTOM);
     if (result) {
@@ -215,7 +215,7 @@ void create() {
     }
     return 0;
   });
-  IupSetCallback(account_link, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_link, "ACTION", [](Ihandle*) -> int {
     auto e = OS::create_link(get_selected_account());
     if (e != Err::OK) {
       show_error_message(std::string("Failed to create link. #") +
@@ -230,7 +230,7 @@ void create() {
     }
     return 0;
   });
-  IupSetCallback(account_launch, "ACTION", [](Ihandle* ih) -> int {
+  IupSetCallback(account_launch, "ACTION", [](Ihandle*) -> int {
     auto e = Game::login(get_selected_account());
     if (e != Err::OK) {
       show_game_launch_error(e);

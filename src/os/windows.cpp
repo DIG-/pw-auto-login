@@ -73,7 +73,7 @@ Err launch(const bool require_adm,
            const std::string& window_title) {
   std::string executable = executable_.string();
   std::string workdir = workdir_.string();
-  SHELLEXECUTEINFO sei = {0};
+  SHELLEXECUTEINFO sei = {};
   sei.cbSize = sizeof(SHELLEXECUTEINFO);
   sei.fMask = SEE_MASK_NOCLOSEPROCESS;
   sei.hwnd = nullptr;
