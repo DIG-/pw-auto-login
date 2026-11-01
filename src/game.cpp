@@ -10,16 +10,6 @@
 namespace DIG {
 namespace Game {
 
-Err utf8_to_utf16le(std::stringstream& output, const std::string& input) {
-  auto utf16 =
-      std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}
-          .from_bytes(input);
-  for (auto& c : utf16) {
-    output.write((char*)&c, 2);
-  }
-  return Err::OK;
-}
-
 Err login(const Data::Account& account) {
   auto& config = Config::instance;
   Err e = Err::OK;

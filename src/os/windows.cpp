@@ -178,5 +178,12 @@ Err create_link(const Data::Account& account) {
   return Err::NOT_IMPLEMENTED;
 }
 
+std::string narrow(const std::wstring& wstr){
+  int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), wstr.size(), NULL, 0, NULL, NULL);
+  std::string strTo(size_needed, 0);
+  WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), wstr.size(), &strTo[0], size_needed, NULL, NULL);
+  return strTo;
+}
+
 }  // namespace OS
 }  // namespace DIG

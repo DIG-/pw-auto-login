@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "current/config.hpp"
+#include "os.hpp"
 
 namespace DIG {
 namespace Server {
@@ -52,12 +53,10 @@ Err read() {
   file.seekg(2, std::fstream::beg);
   size -= 2;
 
-  std::u16string u16((size / 2) + 1, '\0');
+  std::wstring u16((size / 2) + 1, '\0');
   file.read((char*)&u16[0], size);
 
-  std::string utf8 =
-      std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}
-          .to_bytes(u16);
+  std::string utf8 = OS::narrow(u16);
   std::stringstream converted(utf8);
   std::string line;
   list.clear();

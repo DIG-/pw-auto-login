@@ -15,5 +15,7 @@ Err launch(const bool require_adm,
            const std::string& window_title = "");
 Err create_link(const Data::Account&);
 
+std::string narrow(const std::wstring&);
+
 }  // namespace OS
 }  // namespace DIG
