@@ -2,9 +2,24 @@ add_rules("mode.debug", "mode.release")
 
 add_repositories("dig-repo https://github.com/DIG-/cpp-xrepo.git")
 
+if is_mode("release") then
+    add_ldflags("-static-libgcc","-static-libstdc++")
+    add_cxxflags("-static-libgcc", "-static-libstdc++")
+end
 add_requires("cxxopts ^3.0.0")
 add_requires("libiup ^3.30")
-add_requires("mbedtls ^2.16.2", {configs={shared=true}})
+add_requires(
+    "mbedtls ^2.16.2",
+    {
+        configs = {
+            shared = true,
+            cflags = {"-static-libgcc", "-static-libstdc++"},
+            cxxflags = {"-static-libgcc", "-static-libstdc++"},
+            ldflags = {"-static-libgcc", "-static-libstdc++"},
+            shflags = {"-static-libgcc", "-static-libstdc++"}
+        }
+    }
+)
 add_requires("nlohmann_json ^3.10.5")
 
 target("pw-auto-login")
@@ -25,7 +40,7 @@ target("pw-auto-login")
     add_includedirs("hdr")
     add_includedirs("$(builddir)/hdr")
 
-    set_configvar("PROJECT_ROOT", "$(projectdir)")
+    set_configvar("PROJECT_ROOT", ".")
     add_configfiles("(hdr/version.i.hpp)", {filename="version.hpp"})
     add_configfiles("(res/app.i.rc)", {filename="app.rc"})
 
