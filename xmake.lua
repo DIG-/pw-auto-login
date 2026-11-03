@@ -24,7 +24,7 @@ add_requires("nlohmann_json ^3.10.5")
 
 target("pw-auto-login")
     set_kind("binary")
-    set_version("0.2.4")
+    set_version("0.2.5")
     set_warnings("all")
     set_languages("cxx17")
 
@@ -58,3 +58,11 @@ target("pw-auto-login")
             target:add("configfiles", "(res/app64.i.manifest)", {filename="app.manifest"})
         end
     end)
+
+includes("@builtin/xpack")
+
+xpack("pw-auto-login")
+    set_formats("zip")
+    set_title("PW Auto Login")
+    set_description("PW Auto Login")
+    add_targets("pw-auto-login")
