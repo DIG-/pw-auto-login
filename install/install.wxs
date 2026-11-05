@@ -4,21 +4,13 @@
 <?endif ?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package ProductCode="*" Manufacturer="DIG" Language="1033" Name="PW Auto Login" Version="0.2.4" InstallerVersion="500" UpgradeCode="{1E80501B-6C4D-4215-993B-000000000000}" Scope="perUserOrMachine">
+    <Package ProductCode="*" Manufacturer="DIG" Language="1033" Name="PW Auto Login" Version="0.2.5" InstallerVersion="500" UpgradeCode="{1E80501B-6C4D-4215-993B-000000000000}" Scope="perUserOrMachine">
         <StandardDirectory Id="ProgramFiles6432Folder">
             <Directory Id="INSTALLDIR" Name="PW Auto Login">
                 <Component Id="Files" Guid="{1E80501B-6C4D-4215-993B-000001000000}">
                     <File Id="iup.dll" Name="iup.dll" Source="$(var.ARCH)\iup.dll" />
                     <File Id="libmbedcrypto.dll" Name="libmbedcrypto.dll" Source="$(var.ARCH)\libmbedcrypto.dll" />
-                    <File Id="libstdcpp_6.dll" Name="libstdc++-6.dll" Source="$(var.ARCH)\libstdc++-6.dll" />
-                    <File Id="libwinpthread_1.dll" Name="libwinpthread-1.dll" Source="$(var.ARCH)\libwinpthread-1.dll" />
                     <File Id="pw_auto_login.exe" Name="pw-auto-login.exe" Source="$(var.ARCH)\pw-auto-login.exe" />
-
-                    <?if $(ARCH) = "x64" ?>
-                    <File Id="libgcc_s_seh_1.dll" Name="libgcc_s_seh-1.dll" Source="$(var.ARCH)\libgcc_s_seh-1.dll" />
-                    <?else ?>
-                    <File Id="libgcc_s_dw2_1.dll" Name="libgcc_s_dw2-1.dll" Source="$(var.ARCH)\libgcc_s_dw2-1.dll" />
-                    <?endif ?>
                 </Component>
             </Directory>
         </StandardDirectory>
